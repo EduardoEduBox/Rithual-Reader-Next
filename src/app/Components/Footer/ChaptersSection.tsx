@@ -5,8 +5,8 @@ const createButtons = (): React.ReactNode => {
   return <></>;
 };
 
-const ChapterSection = () => {
+const ChaptersSection = () => {
   return <div></div>;
 };
 
-export default ChapterSection;
+export default ChaptersSection;
