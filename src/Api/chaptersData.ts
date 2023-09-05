@@ -77,7 +77,7 @@ export const chapters = [
   ),
   new ChaptersData(
     "Capítulo - 1: ",
-    "Padaria",
+    ` <strong style="color: ${Colors.Happy}" >Padaria</strong>`,
     "https://cdn.discordapp.com/attachments/421344962303623189/1141174141802786836/rithual_aviso.png",
     "https://cdn.discordapp.com/attachments/421344962303623189/1141383080557428776/ritual_pre_pagina_cap_1.png",
     [
