@@ -8,13 +8,22 @@ import Navigation from "./Navigation";
 const Navbar = () => {
   // State to track whether the icon is active or not
   const [isActive, setActive] = useState(false);
+  const [tracker, setTracker] = useState(false);
   const [isScrollActive, setScrollActive] = useState(false);
   const [prevScrollY, setPrevScrollY] = useState(0);
 
   const navClass: string = "ml-auto h-[75%] w-auto z-[999] active";
 
   const toggleNav = () => {
-    setActive(!isActive);
+    if (isActive && tracker) {
+      setTimeout(() => {
+        setActive(false);
+      }, 300);
+      setTracker(false);
+    } else {
+      setTracker(true);
+      setActive(true);
+    }
   };
 
   useEffect(() => {
@@ -59,17 +68,17 @@ const Navbar = () => {
       </div>
 
       {/* Conditionally render the icon based on isActive */}
-      {isActive ? (
+      {tracker ? (
         <RiEyeCloseLine className={navClass} onClick={toggleNav} />
       ) : (
         <FaEye className={navClass} onClick={toggleNav} />
       )}
 
       {/* Conditionally render the Navigation component */}
-      {isActive && <Navigation />}
+      {isActive && <Navigation tracker={tracker} />}
 
       {/* here we have the div to simulate the after effect that we have in the Wiki */}
-      <div className="absolute bottom-[-1.5rem] left-0 right-0 h-[1.5rem] bg-gradient-to-b from-[#622c47] to-transparent"></div>
+      <div className="absolute bottom-[-1.48rem] left-0 right-0 h-[1.5rem] bg-gradient-to-b from-[#622c47] to-transparent"></div>
     </nav>
   );
 };
