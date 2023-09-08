@@ -3,17 +3,37 @@ import { chapters } from "@/Api/chaptersData";
 
 // first lets do from mobile, and then we can start making the desktop version!
 
+export const currentChapter = chapters.find((chapter) => chapter.id === 2);
+
 const Main = () => {
-  const currentChapter = chapters[1]; // You can adjust this based on user input
+  // const currentChapter = chapters[3]; // You can adjust this based on user input
+
+  if (!currentChapter) {
+    // Handle the case when currentChapter is undefined
+    return (
+      <div className="w-full h-[100vh] flex justify-center items-center">
+        <p>Esse capítulo não existe</p>
+      </div>
+    );
+  }
 
   return (
-    <main className="flex flex-col items-center w-full py-24">
+    <main className="flex flex-col items-center w-full py-28 z-10">
       <div className="w-[90%]">
-        <h1
-          dangerouslySetInnerHTML={{
-            __html: currentChapter.chapter + currentChapter.name,
-          }}
-        ></h1>
+        <h1 className="MainBehindText absolute text-6xl top-24 -z-40 text-[#121212] opacity-[15%]">
+          {currentChapter.name}
+        </h1>
+
+        <h1>
+          <span className="font-medium">{currentChapter.chapter}</span>
+
+          <span
+            className="font-semibold"
+            style={{ color: currentChapter.style }}
+          >
+            {currentChapter.name}
+          </span>
+        </h1>
         <div>
           <img src={currentChapter.advice} alt="" className="shadow-2xl" />
           <img src={currentChapter.prePage} alt="" className="shadow-2xl" />

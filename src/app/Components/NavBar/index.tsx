@@ -53,7 +53,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full h-[3.8rem] bg-[#bb5387] opacity-90 z-50 flex items-center px-[3vw] transform transition-transform duration-300 ${
+      className={`fixed top-0 w-full h-[3.8rem] bg-[#bb5387] opacity-90 z-20 flex items-center px-[3vw] transform transition-transform duration-300 ${
         isScrollActive ? "" : "-translate-y-[5.3rem]"
       }`}
     >
