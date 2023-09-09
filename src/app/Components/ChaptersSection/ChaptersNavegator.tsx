@@ -6,7 +6,7 @@ import { CommentButton } from "../Footer/CommentButton";
 import { useState } from "react";
 
 // Function to remove special characters and spaces from a string
-const replaceAccentedCharacters = (str: string) => {
+const replaceAccentedCharacters = (str: string): string => {
   return str
     .replace(/á/g, "a")
     .replace(/à/g, "a")

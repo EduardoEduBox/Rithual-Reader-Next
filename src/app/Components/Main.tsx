@@ -3,7 +3,7 @@ import { chapters } from "@/Api/chaptersData";
 
 // first lets do from mobile, and then we can start making the desktop version!
 
-export const currentChapter = chapters.find((chapter) => chapter.id === 2);
+export const currentChapter = chapters.find((chapter) => chapter.id === 0);
 
 const Main = () => {
   // const currentChapter = chapters[3]; // You can adjust this based on user input
