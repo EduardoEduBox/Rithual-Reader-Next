@@ -79,3 +79,18 @@ body {
   transform: scale(1.1);
   z-index: 1;
 }
+
+.MainBehindText {
+  text-shadow: 1px 0 rgb(255, 223, 239), 0px 0 rgb(255, 223, 239),
+    0 0px rgb(255, 223, 239), 0 -1px rgb(255, 223, 239),
+    1px 0px rgb(255, 223, 239), 0px 0px rgb(255, 223, 239), -1px -1px #fff,
+    -1px 1px rgb(255, 223, 239);
+}
+
+.ToolTip {
+  height: calc(100vh - 56px) !important;
+}
+
+.ChaptersNavegator {
+  max-height: calc(100% - 3.78rem);
+}
