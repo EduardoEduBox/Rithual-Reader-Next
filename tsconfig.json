@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Api/chaptersData.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Api/chaptersData.ts", "src/app/caps/[id]/page.tsx", "src/app/caps/[id]/ChapterContext.tsxx"],
   "exclude": ["node_modules"]
 }

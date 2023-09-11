@@ -39,7 +39,7 @@ class ChaptersData {
   }
 }
 
-export const chapters = [
+const chapters = [
   new ChaptersData(
     0,
     `Capítulo - 0: `,
@@ -249,3 +249,5 @@ export const chapters = [
     ]
   ),
 ];
+
+export default chapters;

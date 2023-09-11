@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import Navbar from "./Components/NavBar";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -18,8 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="pt">
+      <body className={inter.className}>
+        {/* Include the Navbar component here */}
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
