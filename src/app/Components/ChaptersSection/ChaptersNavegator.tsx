@@ -1,9 +1,9 @@
-import { currentChapter } from "../Main";
-import { chapters } from "@/Api/chaptersData";
-import { LikeButton } from "../Footer/LikeButton";
-import { ShareButton } from "../Footer/ShareButton";
-import { CommentButton } from "../Footer/CommentButton";
-import { useState } from "react";
+import chapters from "@/Api/chaptersData";
+import { LikeButton } from "../icons/LikeButton";
+import { ShareButton } from "../icons/ShareButton";
+import { CommentButton } from "../icons/CommentButton";
+import { useState, useContext } from "react";
+import Link from "next/link";
 
 // Function to remove special characters and spaces from a string
 const replaceAccentedCharacters = (str: string): string => {
@@ -33,7 +33,9 @@ const removeSpecialCharsAndSpaces = (str: string) => {
   return withoutAccents.replace(/\s+/g, "");
 };
 
-export const ChaptersNavegator = () => {
+export const ChaptersNavegator = ({ id }: { id: number }) => {
+  const currentChapter = chapters.find((chapter) => chapter.id === id);
+
   const [filterQuery, setFilterQuery] = useState(""); // State to store filter query
 
   // Filter chapters based on the filterQuery
@@ -58,18 +60,16 @@ export const ChaptersNavegator = () => {
           className="w-11/12 py-2 px-4 bg-neutral-100 rounded-lg text-base text-black border-2 border-neutral-500"
           placeholder="Procurar capítulo..."
           value={filterQuery}
-          onChange={(e) => setFilterQuery(e.target.value)} // Update filterQuery state on input change
+          onChange={(e) => setFilterQuery(e.target.value)}
         />
       </div>
       <div className="ChaptersNavegator h-full overflow-y-auto w-full px-4">
         {filteredChapters.length === 0 ? (
-          // Display a message when no chapters match the filter
           <div className="text-center text-gray-500 font-bold">
             Esse capítulo não existe
           </div>
         ) : (
           filteredChapters.map((el, index) => {
-            // Define isCurrentChapter to check if the current chapter is the same as el, if true, change the button
             const isCurrentChapter = el.id === currentChapter?.id;
             return (
               <div
@@ -92,16 +92,22 @@ export const ChaptersNavegator = () => {
                     {el.description}
                   </p>
                   <div className="flex mt-auto">
-                    {/* Use the isCurrentChapter variable in the ternary operator */}
                     {isCurrentChapter ? (
                       <button className=" rounded py-1 px-2 bg-pink-600 text-pink-50 text-xs">
                         Cap atual
                       </button>
                     ) : (
-                      <button className="rounded py-1 px-2 bg-purple-600 text-purple-50 text-xs">
-                        Ver cap
-                      </button>
+                      <Link href={`/caps/${el.id}`}>
+                        <button className="rounded py-1 px-2 bg-purple-600 text-purple-50 text-xs">
+                          Ver cap
+                        </button>
+                      </Link>
                     )}
+
+                    {/* <div className="flex border-l-lime-500 border-2 w-full h-6">
+                      <LikeButton size="h-5 w-auto"></LikeButton>
+                      <ShareButton size="h-5 w-auto"></ShareButton>
+                    </div> */}
                   </div>
                 </div>
               </div>

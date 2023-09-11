@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import { currentChapter } from "../Main";
 import { ChaptersNavegator } from "./ChaptersNavegator";
+import chapters from "@/Api/chaptersData";
 
 type ChaptersSectionProps = {
   onClose?: () => void; // Optional prop
+  id: number;
 };
 
-const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose }) => {
+const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose, id }) => {
+  // Use the useContext hook to get the currentChapter from the context
+  const currentChapter = chapters.find((chapter) => chapter.id === id);
+
   if (!currentChapter) {
     // Handle the case when currentChapter is undefined
     return (
@@ -20,7 +24,7 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose }) => {
   return (
     <section className="ToolTip w-full bg-neutral-900 bottom-[56px] left-0 absolute z-40">
       <div
-        className="relative w-full h-[30%] px-6 py-[3vh] bg-no-repeat bg-center bg-cover border-double border-b-8 border-neutral-400"
+        className="relative w-full h-[30%] px-6 py-[3vh] bg-no-repeat bg-center bg-cover border-b-8 border-neutral-400"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), transparent), url(${currentChapter.bcImage})`,
           boxShadow: "0px -36px 225px -9px rgba(0, 0, 0, 0.68)",
@@ -58,7 +62,7 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose }) => {
         </div>
       </div>
 
-      <ChaptersNavegator></ChaptersNavegator>
+      <ChaptersNavegator id={id}></ChaptersNavegator>
     </section>
   );
 };

@@ -6,7 +6,7 @@ import ChaptersSection from "../ChaptersSection";
 
 const pointsStyle: string = "h-12 w-auto ml-auto";
 
-export const Dots = () => {
+export const Dots = ({ id }: { id: number }) => {
   const [togglePoints, setTogglePoints] = useState(false);
   const [showChaptersSection, setShowChaptersSection] = useState(false);
 
@@ -33,7 +33,7 @@ export const Dots = () => {
 
       {/* Render ChaptersSection when showChaptersSection is true */}
       {showChaptersSection && (
-        <ChaptersSection onClose={toggleChaptersSection} />
+        <ChaptersSection onClose={toggleChaptersSection} id={id} />
       )}
     </>
   );
