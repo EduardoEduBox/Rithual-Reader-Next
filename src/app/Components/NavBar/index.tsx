@@ -6,19 +6,17 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import Navigation from "./Navigation";
 
 const Navbar = () => {
-  // State to track whether the icon is active or not
   const [isActive, setActive] = useState(false);
   const [tracker, setTracker] = useState(false);
   const [isScrollActive, setScrollActive] = useState(false);
   const [prevScrollY, setPrevScrollY] = useState(0);
+  const [showNavigation, setShowNavigation] = useState(false);
 
-  const navClass: string = "ml-auto h-[75%] w-auto z-[999] active";
+  const navClass = "ml-auto h-[75%] w-auto z-[999] active";
 
   const toggleNav = () => {
     if (isActive && tracker) {
-      setTimeout(() => {
-        setActive(false);
-      }, 300);
+      setActive(false);
       setTracker(false);
     } else {
       setTracker(true);
@@ -27,16 +25,21 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    // the navigation component renders weirdly the first time, so this logic ensures that it will render just when
+    // the whole navbar renders!
+    if (!showNavigation) {
+      setTimeout(() => {
+        setShowNavigation(true);
+      }, 200);
+    }
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
 
       if (!isActive) {
-        // Check if isValid is false, if it is, then apply the scroll logic
         if (scrollY > prevScrollY) {
-          // Scrolling down
           setScrollActive(false);
         } else {
-          // Scrolling up
           setScrollActive(true);
         }
       }
@@ -67,17 +70,16 @@ const Navbar = () => {
         <h1 className="absolute text-3xl font-bold">(૨¡Ƭષαℓ</h1>
       </div>
 
-      {/* Conditionally render the icon based on isActive */}
+      {showNavigation && (
+        <Navigation tracker={tracker} position={isActive ? "left" : "right"} />
+      )}
+
       {tracker ? (
         <RiEyeCloseLine className={navClass} onClick={toggleNav} />
       ) : (
         <FaEye className={navClass} onClick={toggleNav} />
       )}
 
-      {/* Conditionally render the Navigation component */}
-      {isActive && <Navigation tracker={tracker} />}
-
-      {/* here we have the div to simulate the after effect that we have in the Wiki */}
       <div className="absolute bottom-[-1.48rem] left-0 right-0 h-[1.5rem] bg-gradient-to-b from-[#622c47] to-transparent"></div>
     </nav>
   );
