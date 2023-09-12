@@ -64,7 +64,7 @@ const Navbar = () => {
       />
 
       <div className="w-[94vw] h-full absolute flex items-center justify-center">
-        <h1 className="absolute font-bold text-3xl">(૨¡Ƭષαℓ</h1>
+        <h1 className="absolute text-3xl font-bold">(૨¡Ƭષαℓ</h1>
       </div>
 
       {/* Conditionally render the icon based on isActive */}
