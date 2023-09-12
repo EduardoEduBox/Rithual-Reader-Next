@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react";
 
-const Navigation = ({ tracker }: { tracker: boolean }) => {
+const Navigation = ({
+  tracker,
+  position,
+}: {
+  tracker: boolean;
+  position: "left" | "right";
+}) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -9,16 +15,15 @@ const Navigation = ({ tracker }: { tracker: boolean }) => {
     if (sectionEl) {
       if (tracker) {
         sectionEl.style.transition = "transform 0.2s ease";
-        sectionEl.style.transform = "translateX(150px)";
-        setTimeout(() => {
-          sectionEl.style.transform = "translateX(0)";
-        }, 0);
+        sectionEl.style.transform = "translateX(0)"; // Slide in from the left
       } else {
         sectionEl.style.transition = "transform 0.2s ease";
-        sectionEl.style.transform = "translateX(150px)";
+        sectionEl.style.transform = `translateX(${
+          position === "left" ? 0 : "calc(100% + 1.5rem)"
+        })`; // Initially hidden to the right or left
       }
     }
-  }, [tracker]);
+  }, [tracker, position]);
 
   return (
     <section
