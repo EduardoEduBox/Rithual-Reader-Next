@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 const Navigation = ({
@@ -32,9 +33,11 @@ const Navigation = ({
       ref={sectionRef}
     >
       <ul className="navUl text-right mt-[5vh] text-xl flex flex-col gap-[5vh]">
-        <li>
-          <a href="#">Home</a>
-        </li>
+        <Link href={`/`}>
+          <li>
+            <a href="#">Home</a>
+          </li>
+        </Link>
         <li>
           <a href="https://rithual-wiki.com.br/">Wiki</a>
         </li>
