@@ -94,3 +94,11 @@ body {
 .ChaptersNavegator {
   max-height: calc(100% - 3.78rem);
 }
+
+.Reply {
+  margin-left: auto !important;
+}
+
+.Navigation {
+  height: calc(100vh - 56px);
+}

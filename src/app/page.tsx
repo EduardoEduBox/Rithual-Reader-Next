@@ -1,9 +1,13 @@
 // later on we'll make this the home page of our application
 
+import UserInfo from "./Components/HomePage/UserInfo";
+
 export default function Home() {
   return (
     <>
-      <div>this is the home page buddy ;D</div>
+      <section>
+        <UserInfo></UserInfo>
+      </section>
     </>
   );
 }

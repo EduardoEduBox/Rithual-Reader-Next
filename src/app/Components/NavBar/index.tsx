@@ -30,7 +30,7 @@ const Navbar = () => {
     if (!showNavigation) {
       setTimeout(() => {
         setShowNavigation(true);
-      }, 200);
+      }, 500);
     }
 
     const handleScroll = () => {
