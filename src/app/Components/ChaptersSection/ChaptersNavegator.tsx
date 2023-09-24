@@ -79,7 +79,7 @@ export const ChaptersNavegator = ({ id }: { id: number }) => {
                 <div className="flex items-center justify-center w-1/3 h-full ">
                   <img
                     src={el.prePage}
-                    className="w-full h-auto rounded-lg drop-shadow-xl"
+                    className="w-auto h-auto max-h-[95%] rounded-lg drop-shadow-xl"
                     alt=""
                   />
                 </div>

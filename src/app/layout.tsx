@@ -1,7 +1,9 @@
+"use client";
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import Navbar from "./Components/NavBar";
+import { AuthContextProvider } from "./Context/AuthContext";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -20,11 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
-      <body className={inter.className}>
-        {/* Include the Navbar component here */}
-        <Navbar />
-        {children}
-      </body>
+      <AuthContextProvider>
+        <body className={inter.className}>{children}</body>
+      </AuthContextProvider>
     </html>
   );
 }

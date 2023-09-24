@@ -1,12 +1,15 @@
 // first lets do from mobile, and then we can start making the desktop version!
 
 // Page.js
-import React from "react";
-import chapters from "@/Api/chaptersData";
-import Footer from "@/app/Components/Footer";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+import chapters from "@/Api/chaptersData";
+import Navbar from "@/app/Components/NavBar";
+import Footer from "@/app/Components/Footer";
+import Input from "@/app/Components/Comments/Input";
+import Comments from "@/app/Components/Comments";
 
 export async function generateMetadata({ params }: { params: { id: number } }) {
   const product = params.id;
@@ -32,8 +35,10 @@ const Page = ({ params }: { params: { id: number } }) => {
 
   return (
     <>
+      {/* Include the Navbar component here */}
+      <Navbar />
       <main className="z-10 flex flex-col items-center w-full py-28">
-        <div className="w-[90%]">
+        <div className="w-[95%]">
           <h1 className="MainBehindText absolute text-6xl top-24 -z-40 text-[#121212] opacity-[15%]">
             {currentChapter.name}
           </h1>
@@ -81,7 +86,10 @@ const Page = ({ params }: { params: { id: number } }) => {
             ))}
           </div>
         </div>
-        <div className="flex items-center w-full h-24 gap-8 px-5">
+        <div className="flex items-center w-full h-24 gap-6 px-5">
+          {/* here i am gonna put the component */}
+          <Input></Input>
+
           <div className="flex flex-col items-center justify-center w-auto h-full ml-auto">
             {currentChapter.id > 0 ? (
               <Link href={`/caps/${currentChapter.id - 1}`}>
@@ -107,6 +115,7 @@ const Page = ({ params }: { params: { id: number } }) => {
             <h5 className="text-sm font-medium opacity-80">Prox.</h5>
           </div>
         </div>
+        <Comments></Comments>
       </main>
       <Footer id={idConverted}></Footer>
     </>
