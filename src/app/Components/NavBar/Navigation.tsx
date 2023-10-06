@@ -32,8 +32,6 @@ const Navigation = ({
 
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  console.log(user);
-
   useEffect(() => {
     const sectionEl = sectionRef.current;
 

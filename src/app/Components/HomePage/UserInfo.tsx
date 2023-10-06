@@ -9,7 +9,7 @@ const UserInfo = () => {
   if (user) {
     return (
       <div className="flex pl-3 p-3 mr-auto">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-2">
           <Image
             src={user.photoURL}
             alt={`User picture`}
@@ -29,10 +29,10 @@ const UserInfo = () => {
   } else {
     return (
       <div className="flex items-center flex-col mr-auto pl-4 pt-3 w-fit gap-2">
-        <p onClick={googleSignIn} className="text-sm">
+        <p onClick={googleSignIn} className="text-base">
           Login
         </p>
-        <p onClick={googleSignIn} className="text-sm">
+        <p onClick={googleSignIn} className="text-base">
           Registrar
         </p>
       </div>
