@@ -88,7 +88,7 @@ const Page = ({ params }: { params: { id: number } }) => {
         </div>
         <div className="flex items-center w-full h-24 gap-6 px-5">
           {/* here i am gonna put the component */}
-          <Input></Input>
+          <Input id={idConverted}></Input>
 
           <div className="flex flex-col items-center justify-center w-auto h-full ml-auto">
             {currentChapter.id > 0 ? (

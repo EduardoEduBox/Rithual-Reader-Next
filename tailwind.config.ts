@@ -13,8 +13,21 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      textShadow: {
+        DEFAULT: "2px 2px 4px rgba(0, 0, 0, 0.25)", // Adjust as needed
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: { addUtilities: any }) {
+      const newUtilities = {
+        ".text-shadow": {
+          textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)", // Adjust as needed
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
+
 export default config;
