@@ -1,9 +1,10 @@
 import chapters from "@/Api/chaptersData";
-import { LikeButton } from "../icons/LikeButton";
-import { ShareButton } from "../icons/ShareButton";
-import { CommentButton } from "../icons/CommentButton";
+import LikeButton from "../icons/LikeButton";
+import ShareButton from "../icons/ShareButton";
+import CommentButton from "../icons/CommentButton";
 import { useState, useContext } from "react";
 import Link from "next/link";
+import { ChaptersSectionProps } from ".";
 
 // Function to remove special characters and spaces from a string
 const replaceAccentedCharacters = (str: string): string => {
@@ -33,7 +34,10 @@ const removeSpecialCharsAndSpaces = (str: string) => {
   return withoutAccents.replace(/\s+/g, "");
 };
 
-export const ChaptersNavegator = ({ id }: { id: number }) => {
+const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
+  toggleBodyState,
+  id,
+}) => {
   const currentChapter = chapters.find((chapter) => chapter.id === id);
 
   const [filterQuery, setFilterQuery] = useState(""); // State to store filter query
@@ -83,7 +87,7 @@ export const ChaptersNavegator = ({ id }: { id: number }) => {
                     alt=""
                   />
                 </div>
-                <div className="flex flex-col w-2/3 h-full pb-4 pl-3">
+                <div className="flex flex-col w-2/3 h-full pb-4 pl-3 ">
                   <h5 className="mb-2 text-lg font-semibold">
                     <span>{el.chapter}</span>
                     <span style={{ color: el.style }}>{el.name}</span>
@@ -91,23 +95,27 @@ export const ChaptersNavegator = ({ id }: { id: number }) => {
                   <p className="pr-6 overflow-y-auto text-xs font-medium max-h-20">
                     {el.description}
                   </p>
-                  <div className="flex mt-auto">
+                  <div className="flex mt-auto relative">
                     {isCurrentChapter ? (
                       <button className="px-2 py-1 text-xs bg-pink-600 rounded text-pink-50">
                         Cap atual
                       </button>
                     ) : (
-                      <Link href={`/caps/${el.id}`}>
+                      <Link href={`/caps/${el.id}`} onClick={toggleBodyState}>
                         <button className="px-2 py-1 text-xs bg-purple-600 rounded text-purple-50">
                           Ver cap
                         </button>
                       </Link>
                     )}
+                    <div
+                      className="flex h-9 absolute -bottom-2 right-0 text-3xl gap-1"
+                      style={{ width: "calc(100% - 70px)" }}
+                    >
+                      <LikeButton></LikeButton>
+                      <ShareButton></ShareButton>
 
-                    {/* <div className="flex w-full h-6 border-2 border-l-lime-500">
-                      <LikeButton size="h-5 w-auto"></LikeButton>
-                      <ShareButton size="h-5 w-auto"></ShareButton>
-                    </div> */}
+                      {/* later on we'll put the views count here! */}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -118,3 +126,5 @@ export const ChaptersNavegator = ({ id }: { id: number }) => {
     </section>
   );
 };
+
+export default ChaptersNavegator;

@@ -15,7 +15,7 @@ const Input = ({ id }: { id: number }) => {
 
   if (user) {
     return (
-      <div className="flex items-center w-full p-3 text-sm rounded-md bg-transparent border">
+      <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border">
         <input
           type="text"
           placeholder="Faça um comentário"

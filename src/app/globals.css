@@ -15,6 +15,11 @@
   }
 }
 
+/* just to see as grid all the elements, so we have a better idea what is going on */
+/* * {
+  border: solid 1px red;
+} */
+
 body {
   color: rgb(var(--color));
   background: rgb(var(--background));
@@ -87,9 +92,9 @@ body {
     -1px 1px rgb(255, 223, 239);
 }
 
-.ToolTip {
-  height: calc(100vh - 56px) !important;
-}
+/* .ToolTip {
+  height: calc(100svh - 56px) !important;
+} */
 
 .ChaptersNavegator {
   max-height: calc(100% - 3.78rem);
@@ -101,4 +106,14 @@ body {
 
 .Navigation {
   height: calc(100svh - 56px);
+}
+
+.MyFooter p {
+  font-size: 0.75rem /* 12px */;
+  line-height: 1rem;
+}
+
+.gooey-effect-div {
+  filter: url("#goo");
+  overflow: hidden;
 }

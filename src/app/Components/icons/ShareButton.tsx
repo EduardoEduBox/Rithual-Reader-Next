@@ -1,10 +1,12 @@
 import { PiShareFat } from "react-icons/pi";
 
-export const ShareButton = ({ size }: { size?: string }) => {
+const ShareButton = () => {
   return (
     <div className="flex flex-col items-center justify-center">
-      <PiShareFat className={size}></PiShareFat>
-      <p className="text-xs">17</p>
+      <PiShareFat></PiShareFat>
+      <p>17</p>
     </div>
   );
 };
+
+export default ShareButton;

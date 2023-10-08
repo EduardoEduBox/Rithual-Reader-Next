@@ -6,9 +6,19 @@ import ChaptersSection from "../ChaptersSection";
 
 const pointsStyle: string = "h-12 w-auto ml-auto";
 
-export const Dots = ({ id }: { id: number }) => {
+const Dots = ({ id }: { id: number }) => {
   const [togglePoints, setTogglePoints] = useState(false);
   const [showChaptersSection, setShowChaptersSection] = useState(false);
+
+  const toggleBodyState = () => {
+    const body = document.body;
+
+    if (showChaptersSection) {
+      body.classList.remove("overflow-hidden", "w-full");
+    } else {
+      body.classList.add("overflow-hidden", "w-full");
+    }
+  };
 
   const toggleChaptersSection = () => {
     setTogglePoints(!togglePoints);
@@ -18,23 +28,33 @@ export const Dots = ({ id }: { id: number }) => {
   return (
     <>
       {togglePoints ? (
-        // Render PiDotsThreeOutlineFill when togglePoints is true
         <PiDotsThreeOutlineFill
           className={pointsStyle}
-          onClick={toggleChaptersSection}
+          onClick={() => {
+            toggleChaptersSection();
+            toggleBodyState();
+          }}
         />
       ) : (
-        // Render PiDotsThreeOutlineThin when togglePoints is false
         <PiDotsThreeOutlineThin
           className={pointsStyle}
-          onClick={toggleChaptersSection}
+          onClick={() => {
+            toggleChaptersSection();
+            toggleBodyState();
+          }}
         />
       )}
 
       {/* Render ChaptersSection when showChaptersSection is true */}
       {showChaptersSection && (
-        <ChaptersSection onClose={toggleChaptersSection} id={id} />
+        <ChaptersSection
+          onClose={toggleChaptersSection}
+          id={id}
+          toggleBodyState={toggleBodyState}
+        />
       )}
     </>
   );
 };
+
+export default Dots;
