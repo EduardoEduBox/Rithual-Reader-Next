@@ -59,7 +59,7 @@ const Page = ({ params }: { params: { id: number } }) => {
               alt="Página de aviso de leitura"
               width={940}
               height={1315}
-              className="shadow-2xl"
+              className="shadow-2xl min-w-[95%]"
               placeholder="blur"
               blurDataURL={currentChapter.advice}
             />
@@ -68,13 +68,13 @@ const Page = ({ params }: { params: { id: number } }) => {
               alt={`Pré página do capítulo ${currentChapter.id}`}
               width={940}
               height={1315}
-              className="shadow-2xl"
+              className="shadow-2xl min-w-[95%]"
               placeholder="blur"
               blurDataURL={currentChapter.prePage}
             />
             {currentChapter.pages.map((pageUrl, index) => (
               <Image
-                className="shadow-2xl"
+                className="shadow-2xl min-w-[95%]"
                 key={index}
                 src={pageUrl}
                 alt={`Página ${index + 1}`}
@@ -86,33 +86,37 @@ const Page = ({ params }: { params: { id: number } }) => {
             ))}
           </div>
         </div>
-        <div className="flex items-center w-full h-24 gap-6 px-5">
+        <div className="flex items-center w-full h-24 px-5 overflow-hidden gap-3">
           {/* here i am gonna put the component */}
-          <Input id={idConverted}></Input>
-
-          <div className="flex flex-col items-center justify-center w-auto h-full ml-auto">
-            {currentChapter.id > 0 ? (
-              <Link href={`/caps/${currentChapter.id - 1}`}>
-                <FiChevronLeft className="w-auto h-10" />
-              </Link>
-            ) : (
-              <div className="opacity-50 cursor-not-allowed">
-                <FiChevronLeft className="w-auto h-10" />
-              </div>
-            )}
-            <h5 className="text-sm font-medium opacity-80">Ant.</h5>
+          <div className="w-full max-w-[68%]">
+            <Input id={idConverted}></Input>
           </div>
-          <div className="flex flex-col items-center justify-center w-auto h-full">
-            {currentChapter.id < maxChapterId ? (
-              <Link href={`/caps/${currentChapter.id + 1}`}>
-                <FiChevronRight className="w-auto h-10" />
-              </Link>
-            ) : (
-              <div className="opacity-50 cursor-not-allowed">
-                <FiChevronRight className="w-auto h-10" />
-              </div>
-            )}
-            <h5 className="text-sm font-medium opacity-80">Prox.</h5>
+
+          <div className="flex w-fit ml-auto gap-4">
+            <div className="flex flex-col items-center justify-center w-auto h-full">
+              {currentChapter.id > 0 ? (
+                <Link href={`/caps/${currentChapter.id - 1}`}>
+                  <FiChevronLeft className="w-auto h-10" />
+                </Link>
+              ) : (
+                <div className="opacity-50 cursor-not-allowed">
+                  <FiChevronLeft className="w-auto h-10" />
+                </div>
+              )}
+              <h5 className="text-sm font-medium opacity-80">Ant.</h5>
+            </div>
+            <div className="flex flex-col items-center justify-center w-auto h-full">
+              {currentChapter.id < maxChapterId ? (
+                <Link href={`/caps/${currentChapter.id + 1}`}>
+                  <FiChevronRight className="w-auto h-10" />
+                </Link>
+              ) : (
+                <div className="opacity-50 cursor-not-allowed">
+                  <FiChevronRight className="w-auto h-10" />
+                </div>
+              )}
+              <h5 className="text-sm font-medium opacity-80">Prox.</h5>
+            </div>
           </div>
         </div>
         <Comments></Comments>

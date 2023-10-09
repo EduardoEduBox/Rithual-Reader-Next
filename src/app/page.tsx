@@ -6,7 +6,7 @@ import UserInfo from "./Components/HomePage/UserInfo";
 
 export default function Home() {
   return (
-    <section className="w-full h-[100vh] flex flex-col justify-between text-shadow">
+    <section className="w-full h-[100svh] flex flex-col justify-between text-shadow">
       <div className="flex">
         <UserInfo />
         <Language />

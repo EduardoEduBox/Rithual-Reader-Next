@@ -1,14 +1,21 @@
-import React, { useContext } from "react";
+"use client";
+
+import React, { useState, useLayoutEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import { ChaptersNavegator } from "./ChaptersNavegator";
+import ChaptersNavegator from "./ChaptersNavegator";
 import chapters from "@/Api/chaptersData";
 
-type ChaptersSectionProps = {
+export type ChaptersSectionProps = {
   onClose?: () => void; // Optional prop
+  toggleBodyState: () => void;
   id: number;
 };
 
-const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose, id }) => {
+const ChaptersSection: React.FC<ChaptersSectionProps> = ({
+  onClose,
+  toggleBodyState,
+  id,
+}) => {
   // Use the useContext hook to get the currentChapter from the context
   const currentChapter = chapters.find((chapter) => chapter.id === id);
 
@@ -21,8 +28,35 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose, id }) => {
     );
   }
 
+  const [tooltipHeight, setTooltipHeight] = useState(0);
+
+  const updateHeight = () => {
+    const updatedVH = window.innerHeight;
+    setTooltipHeight(updatedVH - 56);
+  };
+
+  useLayoutEffect(() => {
+    // Calculate the actual viewport height
+    const actualVH = window.innerHeight;
+
+    // Subtract 56px from it
+    const desiredHeight = actualVH - 56;
+
+    // Set the height state
+    setTooltipHeight(desiredHeight);
+
+    // Add event listener
+    window.addEventListener("resize", updateHeight);
+
+    // Cleanup the event listener
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
+
   return (
-    <section className="ToolTip w-full bg-neutral-900 bottom-[56px] left-0 absolute z-40">
+    <section
+      className="w-full bottom-[56px] left-0 absolute z-40 overflow-hidden text-shadow bg-black/80 backdrop-blur"
+      style={{ height: `${tooltipHeight}px` }}
+    >
       <div
         className="relative w-full h-[30%] px-6 py-[3vh] bg-no-repeat bg-center bg-cover border-b-8 border-neutral-400"
         style={{
@@ -47,22 +81,28 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onClose, id }) => {
               </span>
             </h1>
             {onClose && (
-              <MdOutlineClose onClick={onClose} className="w-auto h-8 ml-auto">
+              <MdOutlineClose
+                onClick={() => {
+                  onClose(), toggleBodyState();
+                }}
+                className="w-auto h-8 ml-auto"
+              >
                 Close ChaptersSection
               </MdOutlineClose>
             )}
           </div>
 
           {/* Apply styling to limit the height and enable scrolling */}
-          <div className="max-h-[14.5vh] overflow-y-auto">
-            <p className="text-base drop-shadow-xl">
-              {currentChapter.description}
-            </p>
+          <div className="max-h-[14.5vh] overflow-y-auto text-base drop-shadow-xl">
+            {currentChapter.description}
           </div>
         </div>
       </div>
 
-      <ChaptersNavegator id={id}></ChaptersNavegator>
+      <ChaptersNavegator
+        id={id}
+        toggleBodyState={toggleBodyState}
+      ></ChaptersNavegator>
     </section>
   );
 };

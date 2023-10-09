@@ -69,7 +69,7 @@ const Navigation = ({
         </ul>
       </div>
       {!user ? (
-        <ul className="text-right text-xl mb-32 flex flex-col gap-3">
+        <ul className="text-right text-xl mb-16 flex flex-col gap-3">
           <li onClick={handleSignIn} className="text-lg">
             Login
           </li>
