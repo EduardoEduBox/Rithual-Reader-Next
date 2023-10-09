@@ -8,12 +8,11 @@ const pointsStyle: string = "h-12 w-auto ml-auto";
 
 const Dots = ({ id }: { id: number }) => {
   const [togglePoints, setTogglePoints] = useState(false);
-  const [showChaptersSection, setShowChaptersSection] = useState(false);
 
   const toggleBodyState = () => {
     const body = document.body;
 
-    if (showChaptersSection) {
+    if (togglePoints) {
       body.classList.remove("overflow-hidden", "w-full");
     } else {
       body.classList.add("overflow-hidden", "w-full");
@@ -22,7 +21,8 @@ const Dots = ({ id }: { id: number }) => {
 
   const toggleChaptersSection = () => {
     setTogglePoints(!togglePoints);
-    setShowChaptersSection(!showChaptersSection);
+
+    // i will proobably add more things here
   };
 
   return (
@@ -45,8 +45,7 @@ const Dots = ({ id }: { id: number }) => {
         />
       )}
 
-      {/* Render ChaptersSection when showChaptersSection is true */}
-      {showChaptersSection && (
+      {togglePoints && (
         <ChaptersSection
           onClose={toggleChaptersSection}
           id={id}

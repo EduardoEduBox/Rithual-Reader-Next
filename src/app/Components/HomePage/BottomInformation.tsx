@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { FiChevronUp } from "react-icons/fi";
 
 const BottomInformation = () => {
   const hiddenDivRef = useRef(null);
+  const [checker, setChecker] = useState(false);
 
   useEffect(() => {
     gsap.set(hiddenDivRef.current, {
@@ -15,19 +16,32 @@ const BottomInformation = () => {
   }, []);
 
   const animateHiddenDiv = () => {
-    gsap.to(hiddenDivRef.current, {
-      scaleY: 1,
-      ease: "power2.inOut",
-    });
+    if (!checker) {
+      gsap.to(hiddenDivRef.current, {
+        scaleY: 1,
+        ease: "power2.inOut",
+      });
+      setChecker(true);
+    } else {
+      gsap.to(hiddenDivRef.current, {
+        scaleY: 0,
+        ease: "power2.inOut",
+      });
+      setChecker(false);
+    }
   };
 
   return (
     <>
       <div
         ref={hiddenDivRef}
-        className="w-[100vw] h-[100vh] absolute backdrop-blur bg-black/40 z-50"
+        className="w-[100vw] h-[100svh] absolute backdrop-blur bg-black/40 z-50 overflow-hidden"
       >
-        LUMINÁRIS
+        <p>LUMINÁRIS</p>
+
+        <span className="mr-auto" onClick={animateHiddenDiv}>
+          X
+        </span>
       </div>
       <div className="w-full p-6 bg-gradient-to-t from-black transparent">
         <div className="flex gap-4 mb-8">

@@ -1,8 +1,7 @@
 import chapters from "@/Api/chaptersData";
 import LikeButton from "../icons/LikeButton";
 import ShareButton from "../icons/ShareButton";
-import CommentButton from "../icons/CommentButton";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ChaptersSectionProps } from ".";
 

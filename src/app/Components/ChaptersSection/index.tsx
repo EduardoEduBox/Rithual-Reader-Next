@@ -54,7 +54,7 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
 
   return (
     <section
-      className="w-full bg-neutral-900 bottom-[56px] left-0 absolute z-40 overflow-hidden"
+      className="w-full bottom-[56px] left-0 absolute z-40 overflow-hidden text-shadow bg-black/80 backdrop-blur"
       style={{ height: `${tooltipHeight}px` }}
     >
       <div

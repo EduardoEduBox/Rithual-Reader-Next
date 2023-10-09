@@ -112,8 +112,3 @@ body {
   font-size: 0.75rem /* 12px */;
   line-height: 1rem;
 }
-
-.gooey-effect-div {
-  filter: url("#goo");
-  overflow: hidden;
-}
