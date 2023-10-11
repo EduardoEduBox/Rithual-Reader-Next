@@ -63,13 +63,15 @@
 
 ​
 
-- ERD. <!-- working on that... -->
+- ERD.
+- #### working on that...
 - At least 3 to 5 Wireframes.
   #### working on that... (for both mobile and desktop) with react tree as well!
 - At least 2 to 3 User Stories. <!-- working on that... -->
 - Tech Stack. (Can be modified in future).
   #### CHECK!, i am always up to new tools, but Rithual Reader is already pretty consist in the tools
-- Feature List (At least 5). (Can be modified in future). <!-- working on that... -->
+- Feature List (At least 5). (Can be modified in future).
+  #### working on that...
 - Roles Overview - Backend Dev, Frontend Dev, DB Engineer. (Can be modified in future).
   #### if it just going to be me, then this is not a problem
 
