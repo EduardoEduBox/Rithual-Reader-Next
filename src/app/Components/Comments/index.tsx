@@ -20,9 +20,10 @@ const Comment = () => {
 
           {/* Comment Content */}
           <p className="my-2 text-sm">
-            oh, i really like this chapter of rithual, i think madger yasashi is
-            gonna fight with singer in the future, and probably my mom
-            Crow'nRaker is gonna fuck all my family.
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis
+            recusandae sit impedit itaque, rem voluptate dicta harum quibusdam.
+            Voluptates sint culpa minima nobis accusamus laborum reiciendis
+            dicta aperiam nam enim.
           </p>
 
           {/* Like, Dislike & Reply Options */}
