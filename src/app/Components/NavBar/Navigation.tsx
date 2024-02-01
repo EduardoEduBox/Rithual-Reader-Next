@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { UserAuth } from "@/app/Context/AuthContext";
-import { signOut } from "firebase/auth/cordova";
-import Image from "next/image";
+import { UseAuth } from "@/app/Context/AuthContext";
 
 const Navigation = ({
   tracker,
@@ -12,23 +10,7 @@ const Navigation = ({
   position: "left" | "right";
 }) => {
   // variable to track login and logout
-  const { user, googleSignIn, logOut } = UserAuth();
-
-  const handleSignIn = async () => {
-    try {
-      await googleSignIn();
-    } catch (error) {
-      console.error("bruh, you got an error!!" + error);
-    }
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-    } catch (error) {
-      console.error("bruh, you got an error!!" + error);
-    }
-  };
+  const { user, handleSignIn, handleSignOut } = UseAuth();
 
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -57,43 +39,28 @@ const Navigation = ({
       <div>
         <ul className="navUl text-right mt-[5vh] text-xl flex flex-col gap-[5vh]">
           <Link href={`/`}>
-            <li>
-              <a href="#">Home</a>
-            </li>
+            <li>Home</li>
           </Link>
           <li>
             <a href="https://rithual-wiki.com.br/">Wiki</a>
           </li>
 
+          {user ? (
+            <>
+              <Link href={`/profile`}>
+                <li>Perfil</li>
+              </Link>
+              <li onClick={handleSignOut}>Sair</li>
+            </>
+          ) : (
+            <li onClick={handleSignIn}>Login</li>
+          )}
+
           <hr className="w-[100%] h-[3px] bg-white" />
         </ul>
       </div>
-      {!user ? (
-        <ul className="text-right text-xl mb-16 flex flex-col gap-3">
-          <li onClick={handleSignIn} className="text-lg">
-            Login
-          </li>
-          <li onClick={handleSignIn} className="text-lg ">
-            Registrar
-          </li>
-        </ul>
-      ) : (
-        <ul className="text-right mb-32">
-          <Image
-            src={user.photoURL}
-            alt={`User picture`}
-            width={50}
-            height={50}
-            className="shadow-2xl rounded-full ml-auto"
-          />
-          <li>{user.displayName}</li>
-          <li onClick={handleSignOut} className="text-lg text-black">
-            Sair
-          </li>
-        </ul>
-      )}
 
-      <div className="absolute left-[-1.5rem] top-0 h-full right-0 w-[1.5rem] bg-gradient-to-l from-[#622c47] to-transparent"></div>
+      <div className="absolute left-[-1.5rem] top-0 h-full right-0 w-[1.5rem] bg-gradient-to-l from-[#622c47] to-transparent" />
     </section>
   );
 };

@@ -1,9 +1,10 @@
-import chapters from "@/Api/chaptersData";
 import LikeButton from "../icons/LikeButton";
 import ShareButton from "../icons/ShareButton";
 import { useState } from "react";
 import Link from "next/link";
 import { ChaptersSectionProps } from ".";
+
+import { UseFirestore } from "@/app/Context/FirestoreContext";
 
 // Function to remove special characters and spaces from a string
 const replaceAccentedCharacters = (str: string): string => {
@@ -28,16 +29,18 @@ const replaceAccentedCharacters = (str: string): string => {
     .toLowerCase();
 };
 
-const removeSpecialCharsAndSpaces = (str: string) => {
-  const withoutAccents = replaceAccentedCharacters(str);
-  return withoutAccents.replace(/\s+/g, "");
-};
-
 const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
   toggleBodyState,
   id,
 }) => {
-  const currentChapter = chapters.find((chapter) => chapter.id === id);
+  const removeSpecialCharsAndSpaces = (str: string) => {
+    const withoutAccents = replaceAccentedCharacters(str);
+    return withoutAccents.replace(/\s+/g, "");
+  };
+
+  const { chapters } = UseFirestore();
+
+  const currentChapter = chapters.find((chapter) => chapter.id === String(id));
 
   const [filterQuery, setFilterQuery] = useState(""); // State to store filter query
 

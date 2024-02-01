@@ -1,9 +1,8 @@
-"use client";
-
 import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { AuthContextProvider } from "./Context/AuthContext";
+import { FirestoreContextProvider } from "./Context/FirestoreContext";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -22,9 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
-      <AuthContextProvider>
-        <body className={inter.className}>{children}</body>
-      </AuthContextProvider>
+      <FirestoreContextProvider>
+        <AuthContextProvider>
+          <body className={inter.className}>{children}</body>
+        </AuthContextProvider>
+      </FirestoreContextProvider>
     </html>
   );
 }

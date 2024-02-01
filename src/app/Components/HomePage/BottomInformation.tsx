@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { FiChevronUp } from "react-icons/fi";
+import HiddenDiv from "./HiddenDiv";
 
 const BottomInformation = () => {
   const hiddenDivRef = useRef(null);
@@ -35,13 +36,9 @@ const BottomInformation = () => {
     <>
       <div
         ref={hiddenDivRef}
-        className="w-[100vw] h-[100svh] absolute backdrop-blur bg-black/40 z-50 overflow-hidden"
+        className="w-[100vw] h-[100svh] p-5 absolute backdrop-blur bg-black/40 z-50 overflow-hidden flex flex-col items-center"
       >
-        <p>LUMINÁRIS</p>
-
-        <span className="mr-auto" onClick={animateHiddenDiv}>
-          X
-        </span>
+        <HiddenDiv animateHiddenDiv={animateHiddenDiv} />
       </div>
       <div className="w-full p-6 bg-gradient-to-t from-black transparent">
         <div className="flex gap-4 mb-8">

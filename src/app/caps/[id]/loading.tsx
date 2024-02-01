@@ -6,7 +6,7 @@ const Loading = () => {
       <div
         key={index}
         style={{ aspectRatio: "9/16" }}
-        className="max-w-[100%] bg-neutral-900 flex items-center justify-center"
+        className="max-w-[100%] bg-neutral-900 flex items-center justify-center animate-pulse"
       >
         <p>Carregando...</p>
       </div>

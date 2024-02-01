@@ -1,28 +1,29 @@
-// first lets do from mobile, and then we can start making the desktop version!
+"use client";
 
-// Page.js
 import Link from "next/link";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { UseFirestore } from "@/app/Context/FirestoreContext";
 
-import chapters from "@/Api/chaptersData";
+// import chapters from "@/Api/chaptersData";
 import Navbar from "@/app/Components/NavBar";
 import Footer from "@/app/Components/Footer";
 import Input from "@/app/Components/Comments/Input";
 import Comments from "@/app/Components/Comments";
 
-export async function generateMetadata({ params }: { params: { id: number } }) {
-  const product = params.id;
-
-  return { title: "(૨¡Ƭષαℓ Cap: " + product }; // Use the product data to set the title dynamically
-}
-
-const maxChapterId = chapters.length - 1;
-
 const Page = ({ params }: { params: { id: number } }) => {
+  const { chapters } = UseFirestore();
+
+  const maxChapterId = chapters.length - 1;
   const idConverted = Number(params.id);
 
-  const currentChapter = chapters.find((chapter) => chapter.id === idConverted);
+  const currentChapter = chapters.find(
+    (chapter) => Number(chapter.id) === idConverted
+  );
+
+  // setTimeout(() => {
+  //   console.log(chapters);
+  // }, 1000);
 
   if (!currentChapter) {
     // Handle the case when currentChapter is undefined
@@ -32,6 +33,19 @@ const Page = ({ params }: { params: { id: number } }) => {
       </div>
     );
   }
+
+  const getColor = (): string => {
+    switch (currentChapter.style) {
+      case "danger":
+        return "#ff6161";
+      case "alert":
+        return "#feffb5";
+      case "happy":
+        return "#a6df90";
+      default:
+        return "rgb(216 180 254)";
+    }
+  };
 
   return (
     <>
@@ -46,10 +60,7 @@ const Page = ({ params }: { params: { id: number } }) => {
           <h1>
             <span className="font-medium">{currentChapter.chapter}</span>
 
-            <span
-              className="font-semibold"
-              style={{ color: currentChapter.style }}
-            >
+            <span className="font-semibold" style={{ color: getColor() }}>
               {currentChapter.name}
             </span>
           </h1>
@@ -94,8 +105,8 @@ const Page = ({ params }: { params: { id: number } }) => {
 
           <div className="flex w-fit ml-auto gap-4">
             <div className="flex flex-col items-center justify-center w-auto h-full">
-              {currentChapter.id > 0 ? (
-                <Link href={`/caps/${currentChapter.id - 1}`}>
+              {+currentChapter.id > 0 ? (
+                <Link href={`/caps/${+currentChapter.id - 1}`}>
                   <FiChevronLeft className="w-auto h-10" />
                 </Link>
               ) : (
@@ -106,7 +117,7 @@ const Page = ({ params }: { params: { id: number } }) => {
               <h5 className="text-sm font-medium opacity-80">Ant.</h5>
             </div>
             <div className="flex flex-col items-center justify-center w-auto h-full">
-              {currentChapter.id < maxChapterId ? (
+              {+currentChapter.id < maxChapterId ? (
                 <Link href={`/caps/${currentChapter.id + 1}`}>
                   <FiChevronRight className="w-auto h-10" />
                 </Link>
@@ -119,7 +130,7 @@ const Page = ({ params }: { params: { id: number } }) => {
             </div>
           </div>
         </div>
-        <Comments></Comments>
+        <Comments id={idConverted}></Comments>
       </main>
       <Footer id={idConverted}></Footer>
     </>

@@ -1,10 +1,10 @@
 "use client";
 
-import { UserAuth } from "@/app/Context/AuthContext";
+import { UseAuth } from "@/app/Context/AuthContext";
 import Image from "next/image";
 
 const UserInfo = () => {
-  const { user, googleSignIn, logOut } = UserAuth();
+  const { user, googleSignIn, logOut } = UseAuth();
 
   if (user) {
     return (
@@ -31,9 +31,6 @@ const UserInfo = () => {
       <div className="flex items-center flex-col mr-auto pl-4 pt-3 w-fit gap-2">
         <p onClick={googleSignIn} className="text-base">
           Login
-        </p>
-        <p onClick={googleSignIn} className="text-base">
-          Registrar
         </p>
       </div>
     );

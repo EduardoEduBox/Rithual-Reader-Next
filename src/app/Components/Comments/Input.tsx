@@ -1,10 +1,10 @@
 "use client";
 
-import { UserAuth } from "@/app/Context/AuthContext";
+import { UseAuth } from "@/app/Context/AuthContext";
 import { MdSend } from "react-icons/md";
 
 const Input = ({ id }: { id: number }) => {
-  const { user } = UserAuth();
+  const { user } = UseAuth();
 
   const test = async () => {
     // const response = await fetch("http://localhost:8080/comment");
