@@ -61,7 +61,7 @@ const Comments: React.FC<idProp> = ({ id }) => {
   return (
     <>
       {comments.map((comment: CommentType, index: number) => (
-        <div className="flex p-3" key={index}>
+        <div className="flex p-3 w-[90%]" key={index}>
           {/* User Profile Picture */}
           <img
             src={comment.profilePic}
