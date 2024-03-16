@@ -61,38 +61,36 @@ const Comments: React.FC<idProp> = ({ id }) => {
   return (
     <>
       {comments.map((comment: CommentType, index: number) => (
-        <div className="flex p-3 w-[90%]" key={index}>
+        <div className="flex p-1 my-2 w-[90%] flex-col flex-grow" key={index}>
           {/* User Profile Picture */}
-          <img
-            src={comment.profilePic}
-            alt="user's profile"
-            className="w-auto h-10 rounded-full mr-3"
-          />
 
-          <div className="flex flex-col flex-grow">
-            {/* User's Name & Timestamp */}
-            <div className="flex justify-between items-center">
-              <span className="font-bold">{comment.username}</span>
-              <span className="text-xs text-gray-500">
-                {comment.timePosted}
-              </span>
-            </div>
+          {/* User's Name & Timestamp */}
+          <div className="flex justify-between items-center">
+            <img
+              src={comment.profilePic}
+              alt="user's profile"
+              className="w-auto h-10 rounded-full mr-3"
+            />
+            <span className="font-bold text-lg mr-auto">
+              {comment.username}
+            </span>
+            <span className="text-xs text-gray-500">{comment.timePosted}</span>
+          </div>
 
-            {/* Comment Content */}
-            <p className="my-2 text-base">{comment.content}</p>
+          {/* Comment Content */}
+          <p className="my-2 text-xs">{comment.content}</p>
 
-            {/* Like, Dislike & Reply Options */}
-            <div className="flex items-center space-x-3">
-              <button
-                className="flex items-center space-x-1"
-                onClick={() => updateLikes(index)}
-              >
-                <GoHeart className="text-gray-500" />
-                <span className="text-xs text-gray-500">{comment.likes}</span>
-              </button>
+          {/* Like, Dislike & Reply Options */}
+          <div className="flex items-center space-x-3">
+            <button
+              className="flex items-center space-x-1"
+              onClick={() => updateLikes(index)}
+            >
+              <GoHeart className="text-gray-500" />
+              <span className="text-xs text-gray-500">{comment.likes}</span>
+            </button>
 
-              <button className="Reply text-xs text-gray-500">REPLY</button>
-            </div>
+            <button className="Reply text-xs text-gray-500">REPLY</button>
           </div>
         </div>
       ))}
