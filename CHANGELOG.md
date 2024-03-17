@@ -15,3 +15,4 @@ Novas adições, um destaque a ressaltar é uma função customizada criada para
 ### Adicionado
 - função criada para obter o id atual do documento no firebase no arquivo FirebaseDocumentChapterId.tsx com menos verbosidade (irei renomeia-lo mais tarde)
 - Adição e exclusão de likes dos comentários
+- Componente Comment criado com o HTML do comentário para lidar com cada elemento individualmente (edição, like, exclusão)
