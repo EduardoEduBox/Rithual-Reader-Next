@@ -11,8 +11,11 @@ import Footer from "@/app/Components/Footer";
 import Input from "@/app/Components/Comments/Input";
 import Comments from "@/app/Components/Comments";
 import { useEffect } from "react";
+import getFirebaseDocumentChapterId from "@/app/Components/FirebaseDocumentId";
+import { db } from "@/app/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
-const Page = ({ params }: { params: { id: number } }) => {
+const Page = async ({ params }: { params: { id: number } }) => {
   const { chapters } = UseFirestore();
 
   const maxChapterId = chapters.length - 1;
