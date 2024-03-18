@@ -2,11 +2,12 @@
 
 import { UseAuth } from "@/app/Context/AuthContext";
 import { MdSend } from "react-icons/md";
+import { v4 as uuidv4 } from 'uuid';
 
 import { Timestamp, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useState } from "react";
-import getFirebaseDocumentChapterId from "../FirebaseDocumentChapterId";
+import getFirebaseDocumentId from "../FirebaseDocumentId";
 
 const Input = ({ id }: { id: number }) => {
   const [comment, setComment] = useState('');
@@ -18,18 +19,18 @@ const Input = ({ id }: { id: number }) => {
 
     // Objeto do novo comentário
     const newComment = {
-      id: Math.floor(Math.random() * 100) + 1,
+      id: uuidv4(),
       content: comment,
       email: user!.email,
       likes: 0,
       nestedComments: [],
       profilePic: user!.photoURL,
       timePosted: createdAt,
-      username: user!.displayName
+      username: user!.displayName,
+      edited: false
     }
 
-    let chapterId = await getFirebaseDocumentChapterId(id);
-
+    let chapterId = await getFirebaseDocumentId('Chapters', 'id', id);
     const chapterRef = doc(db, "Chapters", chapterId!.toString());
 
     await updateDoc(chapterRef, {

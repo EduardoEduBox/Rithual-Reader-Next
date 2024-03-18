@@ -3,19 +3,33 @@ import { UseFirestore } from "@/app/Context/FirestoreContext";
 import { updateDoc, doc, increment, setDoc, addDoc, collection, getDoc, getDocFromCache, where, getDocs, query, deleteDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { UseAuth } from "@/app/Context/AuthContext";
-import { v4 as uuidv4 } from 'uuid';
 
 // tailwind ui
 import { Fragment, useEffect, useId, useRef, useState } from 'react'
 import { Menu, Dialog, Transition } from '@headlessui/react'
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import getFirebaseDocumentChapterId from "../FirebaseDocumentChapterId";
+import getFirebaseDocumentId from "../FirebaseDocumentId";
 import { Noto_Sans_Rejang } from "next/font/google";
 import { MdSend } from "react-icons/md";
+import Loading from "../Loading";
 
-const Modal = ({openModal, setOpenModal}: any) => {
+const Modal = ({comments, commentId, openModal, setOpenModal}: any) => {
   const cancelButtonRef = useRef(null)
+
+  const deleteComment = async () => {
+    const updatedComments = [...comments];
+
+    const restingComments = updatedComments.filter((comment) => comment.id !== commentId);    
+    
+    // const likeId = await getFirebaseDocumentId('Chapters', 'userEmail', user!.email);
+    // await deleteDoc(doc(db, "Likes", likeId));
+
+    // // Update the document
+    // await updateDoc(chapterRef, {
+    //   comments: updatedComments,
+    // });
+  }
 
   return (
     <Transition.Root show={openModal} as={Fragment}>
@@ -65,7 +79,7 @@ const Modal = ({openModal, setOpenModal}: any) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpenModal(false)}
+                    onClick={() => deleteComment(commentId)}
                   >
                     Excluir
                   </button>
@@ -87,7 +101,7 @@ const Modal = ({openModal, setOpenModal}: any) => {
   )
 }
 
-const Dropdown = ({ setOpenModal }: { setOpenModal: (value: boolean) => void }) => {
+const Dropdown = ({setEditMode, setOpenModal }: {setEditMode: (value: boolean) => void, setOpenModal: (value: boolean) => void }) => {
   function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
   }
@@ -112,7 +126,7 @@ const Dropdown = ({ setOpenModal }: { setOpenModal: (value: boolean) => void }) 
             <Menu.Item>
               {({ active }) => (
                 <a
-                  href="#"
+                  onClick={() => setEditMode(true)}
                   className={classNames(
                     active ? 'bg-gray-800 text-gray-200' : 'text-gray-300',
                     'block px-4 py-2 text-sm'
@@ -155,6 +169,7 @@ type CommentType = {
 };
 
 const Comments: React.FC<idProp> = async ({ id }) => {
+  const { user } = UseAuth();
   const { chapters } = UseFirestore();
   
   // Find the chapter by ID
@@ -186,14 +201,14 @@ const Comments: React.FC<idProp> = async ({ id }) => {
       const myCollection = collection(db, 'Likes');
 
       const likeObj = {
-        userEmail: comment.email,
-        id: comment.id
+        userEmail: user!.email,
+        commentId: comment.id
       }
 
-      // se o state 'like' for false, isto significa que previamente já estava verdadeiro, ou seja,
-      // já existia, então remove. Caso contrário, adiciona um document
+      // se o state 'like' for false, isto significa que previamente estava verdadeiro, ou seja,
+      // já existia, então remove. Caso contrário, adiciona um document.
 
-      const chapterId = await getFirebaseDocumentChapterId('Chapters', 'id', id);
+      const chapterId = await getFirebaseDocumentId('Chapters', 'id', id);
       const chapterRef = doc(db, "Chapters", chapterId!.toString());
 
       if(like) {
@@ -201,12 +216,14 @@ const Comments: React.FC<idProp> = async ({ id }) => {
 
         // se um id existe, demostra que o documento foi inserido
         if(likeDoc!.id) {
-
           // Se o documento obtido for compatível com o atual comentário,
-          // Tanto como o id e o email, isso significa que o valor do like
-          // do atual comentário combina com o doc, ou seja, é alterado
+          // Tanto o id quanto o email, isso significa que o valor do like
+          // do atual comentário combina com o doc, ou seja, é alterado.
+          const likeRef = doc(db, "Likes", likeDoc!.id);
+          const likeSnap = await getDoc(likeRef);
+          const like = likeSnap.data()
 
-          if(likeObj.id === comment.id && likeObj.userEmail === comment.email) {
+          if(like!.commentId === comment.id && like!.userEmail === user!.email) {
             // Update the document
             await updateDoc(chapterRef, {
               comments: updatedComments,
@@ -214,9 +231,9 @@ const Comments: React.FC<idProp> = async ({ id }) => {
           }
         }
       } else {
-        // Lê a coleção "Likes" com o id inserido e obtém o documento desta coleção
-        const likeId = await getFirebaseDocumentChapterId('Likes', 'id', likeObj.id);
-        await deleteDoc(doc(db, "Likes", likeId!.toString()));
+        // Lê a coleção "Likes" com o id inserido e obtém o documento desta coleção.
+        const likeId = await getFirebaseDocumentId('Likes', 'userEmail', user!.email);
+        await deleteDoc(doc(db, "Likes", likeId));
 
         // Update the document
         await updateDoc(chapterRef, {
@@ -233,7 +250,7 @@ const Comments: React.FC<idProp> = async ({ id }) => {
   // Comentário componente pai para compartilhar states mutuais (modal e dropdown)
 
   // O algoritmo de likes a seguir está lento, 
-  // pois está requisitando para o firebase muitas vezes
+  // pois está requisitando para o firebase muitas vezes.
   const Comment = (props: any) => {
     const [openModal, setOpenModal] = useState(false);
 
@@ -241,23 +258,27 @@ const Comments: React.FC<idProp> = async ({ id }) => {
     const [like, setLike] = useState(false);
     
     const [editMode, setEditMode] = useState(false)
-    const [commentEdit, setCommentEdit] = useState(props.comment.content)
+    const [commentEditedLoading, setCommentEditedLoading] = useState(false)
+    const [commentEditText, setCommentEditText] = useState(props.comment.content)
 
     const { user } = UseAuth();
   
+    // Não estou usando a função FireBaseDocumentId por esta ser singular,
+    // Aqui estou obtendo todos os likes
     useEffect(() => {
       const fetchLikeStatus = async () => {
-        const likeId: string | null = await getFirebaseDocumentChapterId('Likes', 'id', props.comment.id);
+        const docQuery = query(collection(db, 'Likes'), where(`userEmail`, "==", user!.email));
+        const querySnapshot = await getDocs(docQuery);
 
-        if (likeId !== null) {
-          const docRef = doc(db, "Likes", likeId);
-          const docSnap = await getDoc(docRef);
-          const docObj = docSnap.data();
-  
-          if (docObj && docObj.id === props.comment.id) {
-            setLike(true);
-          }
-        } 
+        querySnapshot.forEach((likeDoc) => {
+          if (likeDoc !== null) {
+            const like = likeDoc.data()
+    
+            if (like && like.commentId === props.comment.id && like.userEmail === user!.email) {
+              setLike(true);
+            }
+          } 
+        });
       };
   
       fetchLikeStatus();
@@ -274,8 +295,91 @@ const Comments: React.FC<idProp> = async ({ id }) => {
       // Passando o valor atualizado para a função updateLikes
       await updateLikes(props.index, props.comment, !like);
     };
+
+    const sendEditedMessage = async () => {
+      setCommentEditedLoading(true)
+
+      if(props.comment.email === user!.email) {
+        props.comment.content = commentEditText
+        props.comment.edited = true
+
+        let chapterId = await getFirebaseDocumentId('Chapters', 'id', id);
+        const chapterRef = doc(db, "Chapters", chapterId!.toString());
+    
+        try {
+          await updateDoc(chapterRef, {
+            comments: comments
+          });
+
+          setCommentEditedLoading(false)
+          setEditMode(false)
+        } catch (error) {
+          throw new Error(`Error while updating your comment: ${error}`)
+        }
+      }
+    }
   
     return (
+      commentEditedLoading ? 
+      <div className="flex p-3 w-[90%] pointer-events-none cursor-default relative" key={props.index}>
+        {/* User Profile Picture */}
+        <img
+          src={props.comment.profilePic}
+          alt="user's profile"
+          className="w-auto h-10 rounded-full mr-3 opacity-30"
+        />
+
+        <div className="absolute top-[40%] left-[50%]"><Loading /></div>
+  
+        <div className="flex flex-col flex-grow opacity-30">
+          {/* User's Name & Timestamp */}
+          <div className="flex justify-between items-center">
+            <span className="font-bold">{props.comment.username}</span>
+            <span className="text-xs text-gray-500">
+              {
+                user && user!.email == props.comment.email &&
+                <Dropdown /> 
+              }
+              {props.comment.timePosted}
+            </span>
+          </div>
+  
+          {/* Comment Content */}
+          <p className="my-2 text-base opacity-30">
+            <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
+              <input
+                type="text"
+                placeholder="Faça um comentário"
+                value={commentEditText}
+                className="flex-grow outline-none bg-transparent"
+              />
+              <MdSend
+                className="w-6 h-6 ml-2 text-gray-500 cursor-pointer"
+              />
+            </div>
+          </p>
+  
+          {/* Like, Dislike & Reply Options */}
+          <div className="flex items-center space-x-3 opacity-30">
+            {/* Removido o formulário em volta do botão de like */}
+            <button
+              className="flex items-center space-x-1"
+            >
+              {
+                like ? <GoHeartFill className="cursor-pointer text-red-500" /> : <GoHeart className="text-gray-500" /> 
+              }
+              <span className="text-xs text-gray-500">{likeQt}</span>
+            </button>
+
+            {
+              props.comment.edited && <span className="text-xs text-gray-500 relative left-[-5px]">comentário editado</span>
+            }
+
+            <button className="Reply text-xs text-gray-500">REPLY</button>
+          </div>
+        </div>
+      </div>
+      :
       <div className="flex p-3 w-[90%]" key={props.index}>
         {/* User Profile Picture */}
         <img
@@ -284,7 +388,7 @@ const Comments: React.FC<idProp> = async ({ id }) => {
           className="w-auto h-10 rounded-full mr-3"
         />
   
-        <Modal openModal={openModal} setOpenModal={setOpenModal} />
+        <Modal comments={comments} commentId={props.comment.id} openModal={openModal} setOpenModal={setOpenModal} />
   
         <div className="flex flex-col flex-grow">
           {/* User's Name & Timestamp */}
@@ -293,7 +397,7 @@ const Comments: React.FC<idProp> = async ({ id }) => {
             <span className="text-xs text-gray-500">
               {
                 user && user!.email == props.comment.email &&
-                <Dropdown setOpenModal={setOpenModal} /> 
+                <Dropdown commentId={props.comment.id} setEditMode={setEditMode} setOpenModal={setOpenModal} /> 
               }
               {props.comment.timePosted}
             </span>
@@ -304,17 +408,17 @@ const Comments: React.FC<idProp> = async ({ id }) => {
             {
               editMode ? 
               
-              <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border">
+              <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
                 <input
                   type="text"
                   placeholder="Faça um comentário"
-                  value={commentEdit}
+                  value={commentEditText}
                   className="flex-grow outline-none bg-transparent"
-                  onChange={(e) => setCommentEdit(e.target.value)}
+                  onChange={(e) => setCommentEditText(e.target.value)}
                 />
                 <MdSend
                   className="w-6 h-6 ml-2 text-gray-500 cursor-pointer"
-                  // onClick={sendMessage}
+                  onClick={sendEditedMessage}
                 />
               </div>
               :
@@ -334,6 +438,10 @@ const Comments: React.FC<idProp> = async ({ id }) => {
               }
               <span className="text-xs text-gray-500">{likeQt}</span>
             </button>
+
+            {
+              props.comment.edited && <span className="text-xs text-gray-500 relative left-[-5px]">comentário editado</span>
+            }
   
             <button className="Reply text-xs text-gray-500">REPLY</button>
           </div>

@@ -7,7 +7,7 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'reader.rithual-wiki.com.br',
         port: '',
-        pathname: '/caps/**',
+        pathname: '/**',
       }
     ]
   },

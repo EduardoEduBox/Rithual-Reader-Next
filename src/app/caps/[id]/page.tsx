@@ -10,7 +10,7 @@ import Navbar from "@/app/Components/NavBar";
 import Footer from "@/app/Components/Footer";
 import Input from "@/app/Components/Comments/Input";
 import Comments from "@/app/Components/Comments";
-import getFirebaseDocumentChapterId from "@/app/Components/FirebaseDocumentChapterId";
+import getFirebaseDocumentChapterId from "@/app/Components/FirebaseDocumentId";
 import { db } from "@/app/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
