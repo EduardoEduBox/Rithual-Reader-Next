@@ -10,6 +10,7 @@ import Navbar from "@/app/Components/NavBar";
 import Footer from "@/app/Components/Footer";
 import Input from "@/app/Components/Comments/Input";
 import Comments from "@/app/Components/Comments";
+import { useEffect } from "react";
 
 const Page = ({ params }: { params: { id: number } }) => {
   const { chapters } = UseFirestore();
@@ -21,36 +22,32 @@ const Page = ({ params }: { params: { id: number } }) => {
     (chapter) => Number(chapter.id) === idConverted
   );
 
-  // setTimeout(() => {
-  //   console.log(chapters);
-  // }, 1000);
+  // Generate metadata based on the current chapter
+  const metaTitle = currentChapter
+    ? `(૨¡Ƭષαℓ Cap: ${currentChapter.name}`
+    : "Capítulo não encontrado";
+
+  useEffect(() => {
+    document.title = metaTitle;
+  }, [metaTitle]);
 
   if (!currentChapter) {
     // Handle the case when currentChapter is undefined
     return (
-      <div className="w-full h-[100vh] flex justify-center items-center">
-        <p>Esse capítulo não existe</p>
-      </div>
+      <>
+        <div className="w-full h-[100vh] flex justify-center items-center">
+          <p>Esse capítulo não existe</p>
+        </div>
+      </>
     );
   }
-
-  const getColor = (): string => {
-    switch (currentChapter.style) {
-      case "danger":
-        return "#ff6161";
-      case "alert":
-        return "#feffb5";
-      case "happy":
-        return "#a6df90";
-      default:
-        return "rgb(216 180 254)";
-    }
-  };
 
   return (
     <>
       {/* Include the Navbar component here */}
+
       <Navbar />
+
       <main className="z-10 flex flex-col items-center w-full py-28">
         <div className="w-[95%]">
           <h1 className="MainBehindText absolute text-6xl top-24 -z-40 text-[#121212] opacity-[15%]">
@@ -60,7 +57,7 @@ const Page = ({ params }: { params: { id: number } }) => {
           <h1>
             <span className="font-medium">{currentChapter.chapter}</span>
 
-            <span className="font-semibold" style={{ color: getColor() }}>
+            <span className="font-semibold text-purple-300">
               {currentChapter.name}
             </span>
           </h1>

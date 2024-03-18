@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import { GoHeart, GoHeartFill } from "react-icons/go";
+import { UseFirestore } from "@/app/Context/FirestoreContext";
 
-const LikeButton = () => {
+const LikeButton = ({ id }: { id: number }) => {
+  const { chapters } = UseFirestore();
+  const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
+
   const [like, setLike] = useState(false);
 
   function toggleLike() {
@@ -20,7 +24,7 @@ const LikeButton = () => {
       ) : (
         <GoHeart onClick={toggleLike} className={`cursor-pointer`}></GoHeart>
       )}
-      <p>472</p>
+      <p>{currentChapter?.likes}</p>
     </div>
   );
 };

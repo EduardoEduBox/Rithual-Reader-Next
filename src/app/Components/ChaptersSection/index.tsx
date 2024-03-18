@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import ChaptersNavegator from "./ChaptersNavegator";
-import chapters from "@/Api/chaptersData";
+import { UseFirestore } from "@/app/Context/FirestoreContext";
 
 export type ChaptersSectionProps = {
   onClose?: () => void; // Optional prop
@@ -16,8 +16,14 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
   toggleBodyState,
   id,
 }) => {
-  // Use the useContext hook to get the currentChapter from the context
-  const currentChapter = chapters.find((chapter) => chapter.id === id);
+  const { chapters } = UseFirestore();
+
+  useEffect(() => {
+    console.log("chapters", chapters);
+    console.log("id", id);
+  }, [chapters, id]);
+
+  const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
 
   if (!currentChapter) {
     // Handle the case when currentChapter is undefined
@@ -27,6 +33,8 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
       </div>
     );
   }
+
+  /////////////////////////////////////////////////////////////////////
 
   const [tooltipHeight, setTooltipHeight] = useState(0);
 
@@ -73,10 +81,7 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
               <span className="font-medium drop-shadow-xl text-white">
                 {currentChapter?.chapter}
               </span>
-              <span
-                className="font-semibold drop-shadow-xl"
-                style={{ color: currentChapter.style }}
-              >
+              <span className="font-semibold drop-shadow-xl text-purple-300">
                 {currentChapter?.name}
               </span>
             </h1>

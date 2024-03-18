@@ -26,6 +26,7 @@ interface Chapter {
   chapter: string;
   name: string;
   description: string;
+  likes?: number; // Add a question mark to make it optional
   style: string;
   bcImage: string;
   advice: string;

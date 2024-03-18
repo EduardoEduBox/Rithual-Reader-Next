@@ -1,7 +1,8 @@
 import LikeButton from "../icons/LikeButton";
 import ShareButton from "../icons/ShareButton";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChaptersSectionProps } from ".";
 
 import { UseFirestore } from "@/app/Context/FirestoreContext";
@@ -40,23 +41,39 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
 
   const { chapters } = UseFirestore();
 
-  const currentChapter = chapters.find((chapter) => chapter.id === String(id));
+  // Sort chapters based on their id property
+  const sortedChapters = useMemo(() => {
+    return [...chapters].sort((a, b) => {
+      // Convert string id to number and compare
+      const idA = parseInt(a.id, 10);
+      const idB = parseInt(b.id, 10);
+      return idA - idB;
+    });
+  }, [chapters]);
+
+  const currentChapter = sortedChapters.find(
+    (chapter) => chapter.id === String(id)
+  );
 
   const [filterQuery, setFilterQuery] = useState(""); // State to store filter query
 
   // Filter chapters based on the filterQuery
-  const filteredChapters = chapters.filter((el) => {
-    // Remove special characters and spaces from both filterQuery and chapter/name strings
-    const normalizedFilterQuery = removeSpecialCharsAndSpaces(filterQuery);
-    const normalizedChapter = removeSpecialCharsAndSpaces(el.chapter);
-    const normalizedName = removeSpecialCharsAndSpaces(el.name);
+  const filteredChapters = useMemo(
+    () =>
+      sortedChapters.filter((el) => {
+        // Remove special characters and spaces from both filterQuery and chapter/name strings
+        const normalizedFilterQuery = removeSpecialCharsAndSpaces(filterQuery);
+        const normalizedChapter = removeSpecialCharsAndSpaces(el.chapter);
+        const normalizedName = removeSpecialCharsAndSpaces(el.name);
 
-    // Check if normalizedChapter or normalizedName includes normalizedFilterQuery
-    return (
-      normalizedChapter.includes(normalizedFilterQuery) ||
-      normalizedName.includes(normalizedFilterQuery)
-    );
-  });
+        // Check if normalizedChapter or normalizedName includes normalizedFilterQuery
+        return (
+          normalizedChapter.includes(normalizedFilterQuery) ||
+          normalizedName.includes(normalizedFilterQuery)
+        );
+      }),
+    [filterQuery, sortedChapters]
+  );
 
   return (
     <section className="w-full h-[70%] px-1 pt-4 z-30">
@@ -76,23 +93,26 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
           </div>
         ) : (
           filteredChapters.map((el, index) => {
-            const isCurrentChapter = el.id === currentChapter?.id;
+            const isCurrentChapter = Number(el.id) === Number(id);
             return (
               <div
                 key={index}
                 className="flex w-full my-4 border-b-2 h-44 text-neutral-50 border-neutral-700"
               >
                 <div className="flex items-center justify-center w-1/3 h-full ">
-                  <img
+                  <Image
                     src={el.prePage}
-                    className="w-auto h-auto max-h-[95%] rounded-lg drop-shadow-xl"
-                    alt=""
+                    alt={`Pré página do capítulo ${el.name}`}
+                    title={`Capítulo ${el.chapter} - ${el.name}`}
+                    width={1000}
+                    height={1400}
+                    className="rounded-lg w-auto h-auto max-h-[95%] drop-shadow-xl"
                   />
                 </div>
                 <div className="flex flex-col w-2/3 h-full pb-4 pl-3 ">
                   <h5 className="mb-2 text-lg font-semibold">
                     <span>{el.chapter}</span>
-                    <span style={{ color: el.style }}>{el.name}</span>
+                    <span className="text-purple-300">{el.name}</span>
                   </h5>
                   <p className="pr-6 overflow-y-auto text-xs font-medium max-h-20">
                     {el.description}
@@ -113,7 +133,7 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
                       className="flex h-9 absolute -bottom-2 right-0 text-3xl gap-1"
                       style={{ width: "calc(100% - 70px)" }}
                     >
-                      <LikeButton></LikeButton>
+                      <LikeButton id={id}></LikeButton>
                       <ShareButton></ShareButton>
 
                       {/* later on we'll put the views count here! */}
