@@ -30,7 +30,7 @@ import Loading from "../Loading";
 const Modal = ({ comments, commentId, openModal, setOpenModal }: any) => {
   const cancelButtonRef = useRef(null);
 
-  const deleteComment = async () => {
+  const deleteComment = async (commentId: string) => {
     const updatedComments = [...comments];
 
     const restingComments = updatedComments.filter(
@@ -127,13 +127,13 @@ const Modal = ({ comments, commentId, openModal, setOpenModal }: any) => {
   );
 };
 
-const Dropdown = ({
-  setEditMode,
-  setOpenModal,
-}: {
+type DropdownProps = {
+  commentId: string;
   setEditMode: (value: boolean) => void;
   setOpenModal: (value: boolean) => void;
-}) => {
+};
+
+const Dropdown = ({ commentId, setEditMode, setOpenModal }: DropdownProps) => {
   function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
   }
@@ -395,7 +395,13 @@ const Comments: React.FC<idProp> = async ({ id }) => {
           <div className="flex justify-between items-center">
             <span className="font-bold">{props.comment.username}</span>
             <span className="text-xs text-gray-500">
-              {user && user!.email == props.comment.email && <Dropdown />}
+              {user && user!.email == props.comment.email && (
+                <Dropdown
+                  commentId={props.comment.id}
+                  setEditMode={setEditMode}
+                  setOpenModal={setOpenModal}
+                />
+              )}
               {props.comment.timePosted}
             </span>
           </div>
