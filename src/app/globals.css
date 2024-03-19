@@ -100,9 +100,6 @@ body {
   max-height: calc(100% - 3.78rem);
 }
 
-.Reply {
-  margin-left: auto !important;
-}
 
 .Navigation {
   height: calc(100svh - 56px);

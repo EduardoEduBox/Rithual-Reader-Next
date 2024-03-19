@@ -442,81 +442,85 @@ const Comments: React.FC<idProp> = async ({ id }) => {
         </div>
       </div>
     ) : (
-      <div className="flex p-3 w-[90%]" key={props.index}>
-        {/* User Profile Picture */}
-        <img
-          src={props.comment.profilePic}
-          alt="user's profile"
-          className="w-auto h-10 rounded-full mr-3"
-        />
+      <div
+        className="flex p-1 my-2 w-[90%] flex-col flex-grow"
+        key={props.index}
+      >
+        {/* User's Name & Timestamp */}
+        <div className="flex justify-between items-center">
+          <img
+            src={props.comment.profilePic}
+            alt="user's profile"
+            className="w-auto h-10 rounded-full mr-3"
+          />
 
-        <Modal
-          comments={comments}
-          commentId={props.comment.id}
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
+          <Modal
+            comments={comments}
+            commentId={props.comment.id}
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+          />
 
-        <div className="flex flex-col flex-grow">
-          {/* User's Name & Timestamp */}
-          <div className="flex justify-between items-center">
-            <span className="font-bold">{props.comment.username}</span>
-            <span className="text-xs text-gray-500">
-              {user && user!.email == props.comment.email && (
-                <Dropdown
-                  commentId={props.comment.id}
-                  setEditMode={setEditMode}
-                  setOpenModal={setOpenModal}
-                />
-              )}
-              {props.comment.timePosted}
-            </span>
-          </div>
+          <span className="font-bold text-lg truncate mr-auto">
+            {props.comment.username}
+          </span>
+          <span className="text-xs text-gray-500">
+            {props.comment.timePosted}
+          </span>
+        </div>
 
-          {/* Comment Content */}
-          <p className="my-2 text-base">
-            {editMode ? (
-              <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
-                <input
-                  type="text"
-                  placeholder="Faça um comentário"
-                  value={commentEditText}
-                  className="flex-grow outline-none bg-transparent"
-                  onChange={(e) => setCommentEditText(e.target.value)}
-                />
-                <MdSend
-                  className="w-6 h-6 ml-2 text-gray-500 cursor-pointer"
-                  onClick={sendEditedMessage}
-                />
-              </div>
+        {/* Comment Content */}
+        <p className="my-2 text-xs">
+          {editMode ? (
+            <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
+              <input
+                type="text"
+                placeholder="Faça um comentário"
+                value={commentEditText}
+                className="flex-grow outline-none bg-transparent"
+                onChange={(e) => setCommentEditText(e.target.value)}
+              />
+              <MdSend
+                className="w-6 h-6 ml-2 text-gray-500 cursor-pointer"
+                onClick={sendEditedMessage}
+              />
+            </div>
+          ) : (
+            props.comment.content
+          )}
+        </p>
+
+        {/* Like, Dislike & Reply Options */}
+        <div className="flex items-center space-x-3">
+          {/* Removido o formulário em volta do botão de like */}
+          <button
+            className="flex items-center space-x-1"
+            onClick={handleLikeClick}
+          >
+            {like ? (
+              <GoHeartFill className="cursor-pointer text-red-500" />
             ) : (
-              props.comment.content
+              <GoHeart className="text-gray-500" />
             )}
-          </p>
+            <span className="text-xs text-gray-500">{likeQt}</span>
+          </button>
 
-          {/* Like, Dislike & Reply Options */}
-          <div className="flex items-center space-x-3">
-            {/* Removido o formulário em volta do botão de like */}
-            <button
-              className="flex items-center space-x-1"
-              onClick={handleLikeClick}
-            >
-              {like ? (
-                <GoHeartFill className="cursor-pointer text-red-500" />
-              ) : (
-                <GoHeart className="text-gray-500" />
-              )}
-              <span className="text-xs text-gray-500">{likeQt}</span>
-            </button>
+          {props.comment.edited && (
+            <span className="text-xs text-gray-500 relative left-[-5px]">
+              comentário editado
+            </span>
+          )}
 
-            {props.comment.edited && (
-              <span className="text-xs text-gray-500 relative left-[-5px]">
-                comentário editado
-              </span>
+          <span className="!ml-auto relative bottom-1">
+            {user && user!.email == props.comment.email && (
+              <Dropdown
+                commentId={props.comment.id}
+                setEditMode={setEditMode}
+                setOpenModal={setOpenModal}
+              />
             )}
-
-            <button className="Reply text-xs text-gray-500">REPLY</button>
-          </div>
+          </span>
+          <button className="text-xs text-gray-500">REPLY</button>
         </div>
       </div>
     );
