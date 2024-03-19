@@ -2,7 +2,7 @@
 
 All notable changes to this project (Rithual-Reader-Next) will be documented in this file.
 
-## 2023-3-15 [Samuel Almeida]
+## 2024-3-15 [Samuel Almeida]
 
 New additions to the Input.tsx file (chapter comment field) for the user.
 
@@ -10,7 +10,7 @@ New additions to the Input.tsx file (chapter comment field) for the user.
 
 - Comment submission compatible with the firestore document structure (unfinished)
 
-## 2023-3-16 [Samuel Almeida]
+## 2024-3-16 [Samuel Almeida]
 
 New additions, one highlight to mention is a custom function created to handle less verbose firebase requests.
 
@@ -20,7 +20,7 @@ New additions, one highlight to mention is a custom function created to handle l
 - Addition and deletion of comment likes
 - Comment component created with the HTML of the comment to handle each element individually (editing, liking, deletion)
 
-## 2023-3-17 [Samuel Almeida]
+## 2024-3-17 [Samuel Almeida]
 
 Correction
 
@@ -28,7 +28,7 @@ Correction
 
 - Correction in the next.config.js file to change the reader subdomain's pathname
 
-## 2023-3-18 [Samuel Almeida]
+## 2024-3-18 [Samuel Almeida]
 
 Correction, Addition
 
