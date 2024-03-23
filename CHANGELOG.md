@@ -77,3 +77,17 @@ type DropdownProps = {
 ```
 
 - Dinamically updating website title when navegating through chapters
+
+## 2024-3-23 [Eduardo Barbosa]
+
+Added background image of Singer Faksumi in the home page, carousel and other information added in the HiddenDiv component.
+
+### Added
+
+- Background photo of Singer Faksumi in Home page component
+
+- Information about chapters added in HiddenDiv component as well as carousel with all the chapter's pre pages
+
+### Modified
+
+- Replaces Flickity lib with SwiperJS for more flexibility and options

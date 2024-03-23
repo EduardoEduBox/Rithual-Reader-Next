@@ -15,7 +15,7 @@ const UserInfo = () => {
             alt={`User picture`}
             width={50}
             height={50}
-            className="shadow-2xl rounded-full ml-auto"
+            className="shadow-xl rounded-full ml-auto"
           />
           <p onClick={logOut} className="text-sm">
             Sair
