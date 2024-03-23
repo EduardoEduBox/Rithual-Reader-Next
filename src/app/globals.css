@@ -92,9 +92,6 @@ body {
     -1px 1px rgb(255, 223, 239);
 }
 
-/* .ToolTip {
-  height: calc(100svh - 56px) !important;
-} */
 
 .ChaptersNavegator {
   max-height: calc(100% - 3.78rem);
@@ -108,4 +105,8 @@ body {
 .MyFooter p {
   font-size: 0.75rem /* 12px */;
   line-height: 1rem;
+}
+
+.swiper-pagination-bullets {
+  bottom: -300px;
 }

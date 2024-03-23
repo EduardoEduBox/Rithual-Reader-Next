@@ -36,7 +36,7 @@ const BottomInformation = () => {
     <>
       <div
         ref={hiddenDivRef}
-        className="w-[100vw] h-[100svh] p-5 absolute backdrop-blur bg-black/40 z-50 overflow-hidden flex flex-col items-center"
+        className="w-[100vw] h-[100svh] absolute backdrop-blur bg-black/40 z-50 overflow-hidden flex flex-col items-center"
       >
         <HiddenDiv animateHiddenDiv={animateHiddenDiv} />
       </div>
