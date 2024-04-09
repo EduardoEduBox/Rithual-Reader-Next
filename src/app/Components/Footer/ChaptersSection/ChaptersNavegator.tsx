@@ -1,39 +1,39 @@
-import LikeButton from "../icons/LikeButton";
-import ShareButton from "../icons/ShareButton";
+import LikeButton from "../../icons/LikeButton";
+import ShareButton from "../../icons/ShareButton";
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ChaptersSectionProps } from ".";
+import Image from "next/image";
 
 import { UseFirestore } from "@/app/Context/FirestoreContext";
-
-// Function to remove special characters and spaces from a string
-const replaceAccentedCharacters = (str: string): string => {
-  return str
-    .replace(/á/g, "a")
-    .replace(/à/g, "a")
-    .replace(/â/g, "a")
-    .replace(/ã/g, "a")
-    .replace(/é/g, "e")
-    .replace(/è/g, "e")
-    .replace(/ê/g, "e")
-    .replace(/í/g, "i")
-    .replace(/ì/g, "i")
-    .replace(/î/g, "i")
-    .replace(/ó/g, "o")
-    .replace(/ò/g, "o")
-    .replace(/ô/g, "o")
-    .replace(/õ/g, "o")
-    .replace(/ú/g, "u")
-    .replace(/ù/g, "u")
-    .replace(/û/g, "u")
-    .toLowerCase();
-};
 
 const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
   toggleBodyState,
   id,
 }) => {
+  // Function to remove special characters and spaces from a string
+  const replaceAccentedCharacters = (str: string): string => {
+    return str
+      .replace(/á/g, "a")
+      .replace(/à/g, "a")
+      .replace(/â/g, "a")
+      .replace(/ã/g, "a")
+      .replace(/é/g, "e")
+      .replace(/è/g, "e")
+      .replace(/ê/g, "e")
+      .replace(/í/g, "i")
+      .replace(/ì/g, "i")
+      .replace(/î/g, "i")
+      .replace(/ó/g, "o")
+      .replace(/ò/g, "o")
+      .replace(/ô/g, "o")
+      .replace(/õ/g, "o")
+      .replace(/ú/g, "u")
+      .replace(/ù/g, "u")
+      .replace(/û/g, "u")
+      .toLowerCase();
+  };
+
   const removeSpecialCharsAndSpaces = (str: string) => {
     const withoutAccents = replaceAccentedCharacters(str);
     return withoutAccents.replace(/\s+/g, "");
@@ -50,10 +50,6 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
       return idA - idB;
     });
   }, [chapters]);
-
-  const currentChapter = sortedChapters.find(
-    (chapter) => chapter.id === String(id)
-  );
 
   const [filterQuery, setFilterQuery] = useState(""); // State to store filter query
 
@@ -75,6 +71,8 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
     [filterQuery, sortedChapters]
   );
 
+  console.log(filteredChapters[1].prePage);
+
   return (
     <section className="w-full h-[70%] px-1 pt-4 z-30">
       <div className="flex items-center justify-center w-full mb-4">
@@ -94,6 +92,7 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
         ) : (
           filteredChapters.map((el, index) => {
             const isCurrentChapter = Number(el.id) === Number(id);
+
             return (
               <div
                 key={index}
@@ -104,9 +103,9 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
                     src={el.prePage}
                     alt={`Pré página do capítulo ${el.name}`}
                     title={`Capítulo ${el.chapter} - ${el.name}`}
-                    width={1000}
-                    height={1400}
                     className="rounded-lg w-auto h-auto max-h-[95%] drop-shadow-xl"
+                    width={150}
+                    height={200}
                   />
                 </div>
                 <div className="flex flex-col w-2/3 h-full pb-4 pl-3 ">

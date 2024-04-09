@@ -32,7 +32,6 @@ const Navigation = ({
 
   return (
     <section
-      id="hello"
       className="Navigation w-fit bg-[#bb5387] top-[3.76rem] pl-16 right-0 pr-[2vw] absolute z-50 flex flex-col justify-between"
       ref={sectionRef}
     >

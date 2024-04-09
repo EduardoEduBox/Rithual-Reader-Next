@@ -1,16 +1,15 @@
-import React, { useRef, useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { UseFirestore } from "@/app/Context/FirestoreContext";
-import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
+import gsap from "gsap";
+import Link from "next/link";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import Link from "next/link";
 
 interface HiddenDivProps {
   animateHiddenDiv: () => void;
@@ -92,11 +91,9 @@ const HiddenDiv: React.FC<HiddenDivProps> = ({ animateHiddenDiv }) => {
             {chaptersInOrder.map((chapter, index) => (
               <SwiperSlide key={index}>
                 <div className="w-full flex flex-col items-center justify-center">
-                  <Image
+                  <img
                     src={chapter.prePage}
                     alt={`Capa do capítulo ${chapter.name}`}
-                    width={1000}
-                    height={1000}
                     className="shadow-2xl w-[55%] h-auto rounded-lg"
                   />
                 </div>

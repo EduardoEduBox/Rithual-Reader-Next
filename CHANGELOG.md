@@ -91,3 +91,11 @@ Added background image of Singer Faksumi in the home page, carousel and other in
 ### Modified
 
 - Replaces Flickity lib with SwiperJS for more flexibility and options
+
+## 2024-4-08 [Eduardo Barbosa]
+
+Refactored Comments component, cleaned unused code.
+
+### Modified
+
+- Refactores and cleaned Comment.tsx code, separating each main functionality into separated components, such as the Modal component and the Dropwdown.

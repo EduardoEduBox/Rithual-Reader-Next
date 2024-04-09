@@ -1,3 +1,5 @@
+import { LuEye } from "react-icons/lu";
+
 const Loading = () => {
   const loadingElements = [];
 
@@ -6,9 +8,10 @@ const Loading = () => {
       <div
         key={index}
         style={{ aspectRatio: "9/16" }}
-        className="max-w-[100%] bg-neutral-900 flex items-center justify-center animate-pulse"
+        className="max-w-[100%] flex-col bg-neutral-900 flex items-center justify-center animate-pulse"
       >
-        <p>Carregando...</p>
+        <LuEye className="text-7xl text-neutral-200 animate-spin" />
+        <p className="opacity-50">Carregando...</p>
       </div>
     );
   }

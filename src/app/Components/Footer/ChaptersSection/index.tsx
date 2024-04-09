@@ -18,11 +18,6 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
 }) => {
   const { chapters } = UseFirestore();
 
-  useEffect(() => {
-    console.log("chapters", chapters);
-    console.log("id", id);
-  }, [chapters, id]);
-
   const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
 
   if (!currentChapter) {
