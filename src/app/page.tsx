@@ -18,6 +18,7 @@ export default function Home() {
         <UserInfo />
         <Language />
       </div>
+
       <BottomInformation />
     </section>
   );

@@ -10,13 +10,12 @@ import Navbar from "@/app/Components/NavBar";
 import Footer from "@/app/Components/Footer";
 import Input from "@/app/Components/Comments/Input";
 import Comments from "@/app/Components/Comments";
-import { useEffect } from "react";
-import getFirebaseDocumentChapterId from "@/app/Components/FirebaseDocumentId";
-import { db } from "@/app/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import Loading from "@/app/Components/Loading";
 
 const Page = async ({ params }: { params: { id: number } }) => {
   const { chapters } = UseFirestore();
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const maxChapterId = chapters.length - 1;
   const idConverted = Number(params.id);
@@ -34,14 +33,29 @@ const Page = async ({ params }: { params: { id: number } }) => {
     document.title = metaTitle;
   }, [metaTitle]);
 
-  if (!currentChapter) {
-    // Handle the case when currentChapter is undefined
+  useEffect(() => {
+    // Check if the chapters have loaded
+    if (chapters.length > 0) {
+      setLoading(false);
+    }
+  }, [chapters]);
+
+  if (loading) {
+    // Show a loading message or spinner
     return (
-      <>
-        <div className="w-full h-[100vh] flex justify-center items-center">
-          <p>Esse capítulo não existe</p>
-        </div>
-      </>
+      <div className="w-full h-[100vh] flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (!currentChapter) {
+    // Now this will only show if the chapters have loaded and the current chapter is indeed missing
+    return (
+      <div className="w-full h-[100vh] flex justify-center items-center">
+        <p>Esse capítulo não existe</p>{" "}
+        {/* Localized: This chapter does not exist */}
+      </div>
     );
   }
 
@@ -70,6 +84,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
               alt="Página de aviso de leitura"
               width={940}
               height={1315}
+              quality={100}
               className="shadow-2xl min-w-[95%]"
               placeholder="blur"
               blurDataURL={currentChapter.advice}
@@ -79,6 +94,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
               alt={`Pré página do capítulo ${currentChapter.id}`}
               width={940}
               height={1315}
+              quality={100}
               className="shadow-2xl min-w-[95%]"
               placeholder="blur"
               blurDataURL={currentChapter.prePage}
@@ -90,9 +106,8 @@ const Page = async ({ params }: { params: { id: number } }) => {
                 src={pageUrl}
                 alt={`Página ${index + 1}`}
                 width={940}
+                quality={100}
                 height={1315}
-                placeholder="blur"
-                blurDataURL={pageUrl}
               />
             ))}
           </div>

@@ -1,14 +1,17 @@
+import { useEffect, useState } from "react";
+import Dropdown from "./Dropdown";
+import Modal from "./Modal";
+
 import { GoHeart, GoHeartFill } from "react-icons/go";
+
+// Firebase
 import { UseFirestore } from "@/app/Context/FirestoreContext";
 import {
   updateDoc,
   doc,
-  increment,
-  setDoc,
   addDoc,
   collection,
   getDoc,
-  getDocFromCache,
   where,
   getDocs,
   query,
@@ -18,178 +21,9 @@ import { db } from "@/app/firebase";
 import { UseAuth } from "@/app/Context/AuthContext";
 
 // tailwind ui
-import { Fragment, useEffect, useId, useRef, useState } from "react";
-import { Menu, Dialog, Transition } from "@headlessui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import getFirebaseDocumentId from "../FirebaseDocumentId";
-import { Noto_Sans_Rejang } from "next/font/google";
 import { MdSend } from "react-icons/md";
 import Loading from "../Loading";
-
-const Modal = ({ comments, commentId, openModal, setOpenModal }: any) => {
-  const cancelButtonRef = useRef(null);
-
-  const deleteComment = async (commentId: string) => {
-    const updatedComments = [...comments];
-
-    const restingComments = updatedComments.filter(
-      (comment) => comment.id !== commentId
-    );
-
-    // const likeId = await getFirebaseDocumentId('Chapters', 'userEmail', user!.email);
-    // await deleteDoc(doc(db, "Likes", likeId));
-
-    // // Update the document
-    // await updateDoc(chapterRef, {
-    //   comments: updatedComments,
-    // });
-  };
-
-  return (
-    <Transition.Root show={openModal} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        initialFocus={cancelButtonRef}
-        onClose={() => setOpenModal(true)}
-      >
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-stone-950 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <Dialog.Panel className="relative transform overflow-hidden bg-neutral-950 rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-neutral-950 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon
-                        className="h-6 w-6 text-red-600"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-base font-semibold leading-6 text-gray-100"
-                      >
-                        Excluir Comentário?
-                      </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Tem certeza de que deseja excluir esse comentário?
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-neutral-950 shadow-xs px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => deleteComment(commentId)}
-                  >
-                    Excluir
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-gray-200 shadow-sm hover:bg-gray-700 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpenModal(false)}
-                    ref={cancelButtonRef}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition.Root>
-  );
-};
-
-type DropdownProps = {
-  commentId: string;
-  setEditMode: (value: boolean) => void;
-  setOpenModal: (value: boolean) => void;
-};
-
-const Dropdown = ({ commentId, setEditMode, setOpenModal }: DropdownProps) => {
-  function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(" ");
-  }
-
-  return (
-    <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button>
-        <EllipsisHorizontalIcon
-          className="mr-2 relative top-[10px] h-8 w-8 text-gray-400"
-          aria-hidden="false"
-        />
-      </Menu.Button>
-
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="bg-neutral-950 shadow-xl absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  onClick={() => setEditMode(true)}
-                  className={classNames(
-                    active ? "bg-gray-800 text-gray-200" : "text-gray-300",
-                    "block px-4 py-2 text-sm"
-                  )}
-                >
-                  Editar
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  onClick={() => setOpenModal(true)}
-                  className={classNames(
-                    active ? "bg-gray-800 text-gray-200" : "text-gray-300",
-                    "block px-4 py-2 text-sm cursor-pointer"
-                  )}
-                >
-                  Excluir
-                </a>
-              )}
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
-  );
-};
 
 type idProp = {
   id: number;
@@ -374,153 +208,164 @@ const Comments: React.FC<idProp> = async ({ id }) => {
       }
     };
 
-    return commentEditedLoading ? (
+    // function to calculate the time posted and convert it to a readable format for the user (seconds, minutes, hours, days)
+    function calculateTimePosted() {
+      const timePosted = new Date(props.comment.timePosted);
+      const currentTime = new Date();
+
+      const timeDifference = currentTime.getTime() - timePosted.getTime();
+      const timeDifferenceInSeconds = timeDifference / 1000;
+      const timeDifferenceInMinutes = timeDifferenceInSeconds / 60;
+      const timeDifferenceInHours = timeDifferenceInMinutes / 60;
+      const timeDifferenceInDays = timeDifferenceInHours / 24;
+
+      if (timeDifferenceInSeconds < 60) {
+        return `${Math.floor(timeDifferenceInSeconds)} segundos atrás`;
+      } else if (timeDifferenceInMinutes < 60) {
+        return `${Math.floor(timeDifferenceInMinutes)} minutos atrás`;
+      } else if (timeDifferenceInHours < 24) {
+        return `${Math.floor(timeDifferenceInHours)} horas atrás`;
+      } else {
+        return `${Math.floor(timeDifferenceInDays)} dias atrás`;
+      }
+    }
+
+    return (
       <div
-        className="flex p-3 w-[90%] pointer-events-none cursor-default relative"
+        className={`flex ${
+          commentEditedLoading ? "p-3" : "p-1 my-2"
+        } w-[90%] flex-col ${
+          commentEditedLoading ? "pointer-events-none cursor-default" : ""
+        } relative`}
         key={props.index}
       >
-        {/* User Profile Picture */}
-        <img
-          src={props.comment.profilePic}
-          alt="user's profile"
-          className="w-auto h-10 rounded-full mr-3 opacity-30"
-        />
+        {/* Modal Component */}
+        {openModal && (
+          <div className="h-screen w-screen fixed flex items-center justify-center">
+            <Modal
+              comments={comments}
+              commentId={props.comment.id}
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+            />
+          </div>
+        )}
 
-        <div className="absolute top-[40%] left-[50%]">
-          <Loading />
-        </div>
-
-        <div className="flex flex-col flex-grow opacity-30">
+        <div className="flex flex-col flex-grow">
           {/* User's Name & Timestamp */}
           <div className="flex justify-between items-center">
-            <span className="font-bold">{props.comment.username}</span>
-            <span className="text-xs text-gray-500">
-              {user && user!.email == props.comment.email && (
-                <Dropdown
-                  commentId={props.comment.id}
-                  setEditMode={setEditMode}
-                  setOpenModal={setOpenModal}
-                />
-              )}
-              {props.comment.timePosted}
+            {/* User Profile Picture */}
+            <img
+              src={props.comment.profilePic}
+              alt="user's profile"
+              className={`w-auto h-10 rounded-full mr-3 ${
+                commentEditedLoading ? "opacity-30" : ""
+              }`}
+            />
+
+            <span
+              className={`font-bold mr-auto truncate pr-3 ${
+                commentEditedLoading ? "text-lg" : "text-base"
+              }`}
+            >
+              {props.comment.username}
+            </span>
+            <span className="text-xs whitespace-nowrap text-gray-500">
+              {calculateTimePosted()}
+              {commentEditedLoading &&
+                user &&
+                user.email == props.comment.email && (
+                  <Dropdown
+                    commentId={props.comment.id}
+                    setEditMode={setEditMode}
+                    setOpenModal={setOpenModal}
+                  />
+                )}
             </span>
           </div>
 
           {/* Comment Content */}
-          <p className="my-2 text-base opacity-30">
-            <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
-              <input
-                type="text"
-                placeholder="Faça um comentário"
-                value={commentEditText}
-                className="flex-grow outline-none bg-transparent"
-              />
-              <MdSend className="w-6 h-6 ml-2 text-gray-500 cursor-pointer" />
-            </div>
-          </p>
+          {commentEditedLoading ? (
+            <div className="my-2 text-base opacity-30">
+              {/* Content while editing is loading */}
+              <div className="absolute top-[40%] left-[50%]">
+                <Loading />
+              </div>
 
-          {/* Like, Dislike & Reply Options */}
-          <div className="flex items-center space-x-3 opacity-30">
-            {/* Removido o formulário em volta do botão de like */}
-            <button className="flex items-center space-x-1">
-              {like ? (
-                <GoHeartFill className="cursor-pointer text-red-500" />
-              ) : (
-                <GoHeart className="text-gray-500" />
-              )}
-              <span className="text-xs text-gray-500">{likeQt}</span>
-            </button>
-
-            {props.comment.edited && (
-              <span className="text-xs text-gray-500 relative left-[-5px]">
-                comentário editado
-              </span>
-            )}
-
-            <button className="Reply text-xs text-gray-500">REPLY</button>
-          </div>
-        </div>
-      </div>
-    ) : (
-      <div
-        className="flex p-1 my-2 w-[90%] flex-col flex-grow"
-        key={props.index}
-      >
-        {/* User's Name & Timestamp */}
-        <div className="flex justify-between items-center">
-          <img
-            src={props.comment.profilePic}
-            alt="user's profile"
-            className="w-auto h-10 rounded-full mr-3"
-          />
-
-          <Modal
-            comments={comments}
-            commentId={props.comment.id}
-            openModal={openModal}
-            setOpenModal={setOpenModal}
-          />
-
-          <span className="font-bold text-lg truncate mr-auto">
-            {props.comment.username}
-          </span>
-          <span className="text-xs text-gray-500">
-            {props.comment.timePosted}
-          </span>
-        </div>
-
-        {/* Comment Content */}
-        <p className="my-2 text-xs">
-          {editMode ? (
-            <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
-              <input
-                type="text"
-                placeholder="Faça um comentário"
-                value={commentEditText}
-                className="flex-grow outline-none bg-transparent"
-                onChange={(e) => setCommentEditText(e.target.value)}
-              />
-              <MdSend
-                className="w-6 h-6 ml-2 text-gray-500 cursor-pointer"
-                onClick={sendEditedMessage}
-              />
+              <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
+                <input
+                  type="text"
+                  placeholder="Faça um comentário"
+                  value={commentEditText}
+                  className="flex-grow outline-none bg-transparent"
+                  readOnly
+                />
+                <MdSend className="w-6 h-6 ml-2 text-gray-500 cursor-pointer" />
+              </div>
             </div>
           ) : (
-            props.comment.content
-          )}
-        </p>
-
-        {/* Like, Dislike & Reply Options */}
-        <div className="flex items-center space-x-3">
-          {/* Removido o formulário em volta do botão de like */}
-          <button
-            className="flex items-center space-x-1"
-            onClick={handleLikeClick}
-          >
-            {like ? (
-              <GoHeartFill className="cursor-pointer text-red-500" />
-            ) : (
-              <GoHeart className="text-gray-500" />
-            )}
-            <span className="text-xs text-gray-500">{likeQt}</span>
-          </button>
-
-          {props.comment.edited && (
-            <span className="text-xs text-gray-500 relative left-[-5px]">
-              comentário editado
-            </span>
+            <p className="my-2 text-xs">
+              {editMode ? (
+                /* Input for editing a comment */
+                <div className="flex items-center w-full p-2 text-sm rounded-md bg-transparent border border-slate-500">
+                  <input
+                    type="text"
+                    placeholder="Faça um comentário"
+                    value={commentEditText}
+                    className="flex-grow outline-none bg-transparent"
+                    onChange={(e) => setCommentEditText(e.target.value)}
+                  />
+                  <MdSend
+                    className="w-6 h-6 ml-2 text-gray-500 cursor-pointer"
+                    onClick={sendEditedMessage}
+                  />
+                </div>
+              ) : (
+                /* Display regular comment content */
+                props.comment.content
+              )}
+            </p>
           )}
 
-          <span className="!ml-auto relative bottom-1">
-            {user && user!.email == props.comment.email && (
-              <Dropdown
-                commentId={props.comment.id}
-                setEditMode={setEditMode}
-                setOpenModal={setOpenModal}
-              />
-            )}
-          </span>
-          <button className="text-xs text-gray-500">REPLY</button>
+          {/* Like, Dislike & Reply Options */}
+          {commentEditedLoading ? (
+            <div className="flex items-center space-x-3 opacity-30">
+              {/* Content while editing is loading */}
+            </div>
+          ) : (
+            /* Regular like/dislike/reply options */
+            <div className="flex items-center space-x-3">
+              <button
+                className="flex items-center space-x-1"
+                onClick={handleLikeClick}
+              >
+                {like ? (
+                  <GoHeartFill className="cursor-pointer text-red-500" />
+                ) : (
+                  <GoHeart className="text-gray-500" />
+                )}
+                <span className="text-xs text-gray-500">{likeQt}</span>
+              </button>
+
+              {props.comment.edited && (
+                <span className="text-xs text-gray-500">
+                  comentário editado
+                </span>
+              )}
+
+              <span className="!ml-auto relative bottom-1">
+                {user && user!.email == props.comment.email && (
+                  <Dropdown
+                    commentId={props.comment.id}
+                    setEditMode={setEditMode}
+                    setOpenModal={setOpenModal}
+                  />
+                )}
+              </span>
+
+              <button className="relative text-xs text-gray-500">REPLY</button>
+            </div>
+          )}
         </div>
       </div>
     );

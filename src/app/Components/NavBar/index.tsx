@@ -15,6 +15,8 @@ const Navbar = () => {
   const navClass = "ml-auto h-[75%] w-auto z-[999] active";
 
   const toggleNav = () => {
+    // these two states are used to control the navigation component, making a delay in the rendering
+
     if (isActive && tracker) {
       setActive(false);
       setTracker(false);
