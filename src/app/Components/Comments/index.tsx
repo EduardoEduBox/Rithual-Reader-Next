@@ -39,10 +39,9 @@ type CommentType = {
 
 const Comments: React.FC<idProp> = async ({ id }) => {
   const { user } = UseAuth();
-  const { chapters } = UseFirestore();
+  const { chapters, getCurrentChapter } = UseFirestore();
 
-  // Find the chapter by ID
-  const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
+  const currentChapter = getCurrentChapter(id);
 
   // Now you have access to the comments if the currentChapter is found
   const comments = currentChapter ? currentChapter.comments : [];

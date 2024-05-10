@@ -26,7 +26,7 @@ interface Chapter {
   chapter: string;
   name: string;
   description: string;
-  likes?: number; // Add a question mark to make it optional
+  likes?: string[]; // Add a question mark to make it optional
   style: string;
   bcImage: string;
   advice: string;
@@ -39,6 +39,7 @@ interface Chapter {
 interface FirestoreContextType {
   chapters: Chapter[];
   getChapters: () => Promise<void>;
+  getCurrentChapter: (id: number) => Chapter | undefined;
 }
 
 interface FirestoreContextProviderProps {
@@ -68,8 +69,14 @@ export const FirestoreContextProvider: React.FC<
     getChapters();
   }, []);
 
+  const getCurrentChapter = (id: number) => {
+    return chapters.find((chapter) => Number(chapter.id) === id);
+  };
+
   return (
-    <FirestoreContext.Provider value={{ chapters, getChapters }}>
+    <FirestoreContext.Provider
+      value={{ chapters, getChapters, getCurrentChapter }}
+    >
       {children}
     </FirestoreContext.Provider>
   );

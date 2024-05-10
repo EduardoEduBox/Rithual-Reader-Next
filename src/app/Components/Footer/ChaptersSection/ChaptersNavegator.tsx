@@ -113,7 +113,7 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
                     <span>{el.chapter}</span>
                     <span className="text-purple-300">{el.name}</span>
                   </h5>
-                  <p className="pr-6 overflow-y-auto text-xs font-medium max-h-20">
+                  <p className="pr-6 overflow-y-auto text-xs lg:text-sm font-medium max-h-20">
                     {el.description}
                   </p>
                   <div className="flex mt-auto relative">

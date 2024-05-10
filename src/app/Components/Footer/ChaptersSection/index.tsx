@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import ChaptersNavegator from "./ChaptersNavegator";
 import { UseFirestore } from "@/app/Context/FirestoreContext";
 
 export type ChaptersSectionProps = {
   onClose?: () => void; // Optional prop
-  toggleBodyState: () => void;
+  toggleBodyState?: () => void;
   id: number;
 };
 
@@ -16,9 +16,11 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
   toggleBodyState,
   id,
 }) => {
-  const { chapters } = UseFirestore();
+  const { getCurrentChapter } = UseFirestore();
 
-  const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
+  const currentChapter = getCurrentChapter(id);
+
+  const isDesktop = window.innerWidth > 1024;
 
   if (!currentChapter) {
     // Handle the case when currentChapter is undefined
@@ -57,11 +59,13 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
 
   return (
     <section
-      className="w-full bottom-[56px] left-0 absolute z-40 overflow-hidden text-shadow bg-black/80 backdrop-blur"
-      style={{ height: `${tooltipHeight}px` }}
+      className="w-full bottom-[56px] lg:bottom-0 left-0 absolute z-40 overflow-hidden text-shadow bg-black/80 backdrop-blur"
+      style={{
+        height: isDesktop ? "100vh" : `${tooltipHeight}px`,
+      }}
     >
       <div
-        className="relative w-full h-[30%] px-6 py-[3vh] bg-no-repeat bg-center bg-cover border-b-8 border-neutral-400"
+        className="relative w-full h-[30%] px-6 py-[3vh] pt-[4.5rem] bg-no-repeat bg-center bg-cover border-b-8 border-neutral-400"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), transparent), url(${currentChapter.bcImage})`,
           boxShadow: "0px -36px 225px -9px rgba(0, 0, 0, 0.68)",
@@ -83,7 +87,7 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
             {onClose && (
               <MdOutlineClose
                 onClick={() => {
-                  onClose(), toggleBodyState();
+                  onClose(), toggleBodyState && toggleBodyState();
                 }}
                 className="w-auto h-8 ml-auto"
               >
@@ -93,7 +97,7 @@ const ChaptersSection: React.FC<ChaptersSectionProps> = ({
           </div>
 
           {/* Apply styling to limit the height and enable scrolling */}
-          <div className="max-h-[14.5vh] overflow-y-auto text-base drop-shadow-xl">
+          <div className="max-h-[14.5vh] overflow-y-auto text-base lg:text-lg drop-shadow-xl">
             {currentChapter.description}
           </div>
         </div>
