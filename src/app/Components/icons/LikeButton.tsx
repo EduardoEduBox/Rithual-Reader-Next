@@ -15,8 +15,6 @@ const LikeButton = ({ id }: { id: number }) => {
   const email = user?.email;
   const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
 
-  console.log(user?.email);
-
   const [currentLikes, setCurrentLikes] = useState(
     currentChapter?.likes?.length
   );
@@ -46,14 +44,15 @@ const LikeButton = ({ id }: { id: number }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <button onClick={likeChapter}>
-        {currentChapter?.likes?.includes(email!) ? (
-          <GoHeartFill className="text-red-500 cursor-pointer"></GoHeartFill>
-        ) : (
-          <GoHeart className="cursor-pointer"></GoHeart>
-        )}
-      </button>
+    <div className="flex flex-col h-full items-center justify-center">
+      {currentChapter?.likes?.includes(email!) ? (
+        <GoHeartFill
+          onClick={likeChapter}
+          className="text-red-500 cursor-pointer"
+        ></GoHeartFill>
+      ) : (
+        <GoHeart onClick={likeChapter} className="cursor-pointer"></GoHeart>
+      )}
       <p>{currentLikes}</p>
     </div>
   );

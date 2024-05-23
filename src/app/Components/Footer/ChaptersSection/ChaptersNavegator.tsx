@@ -90,12 +90,12 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
             Esse capítulo não existe
           </div>
         ) : (
-          filteredChapters.map((el, index) => {
+          filteredChapters.map((el) => {
             const isCurrentChapter = Number(el.id) === Number(id);
 
             return (
               <div
-                key={index}
+                key={el.name}
                 className="flex w-full my-4 border-b-2 h-44 text-neutral-50 border-neutral-700"
               >
                 <div className="flex items-center justify-center w-1/3 h-full ">
@@ -132,8 +132,8 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
                       className="flex h-9 absolute -bottom-2 right-0 text-3xl gap-1"
                       style={{ width: "calc(100% - 70px)" }}
                     >
-                      <LikeButton id={id}></LikeButton>
-                      <ShareButton></ShareButton>
+                      <LikeButton id={Number(el.id)}></LikeButton>
+                      <ShareButton id={Number(el.id)}></ShareButton>
 
                       {/* later on we'll put the views count here! */}
                     </div>

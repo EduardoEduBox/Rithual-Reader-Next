@@ -60,6 +60,14 @@ const Navigation = ({
       </div>
 
       <div className="absolute left-[-1.5rem] top-0 h-full right-0 w-[1.5rem] bg-gradient-to-l from-[#622c47] to-transparent" />
+
+      <a href="https://almeidiano.dev">
+        <img
+          src="https://almeidiano.dev/main-logo.svg"
+          alt="samuel logo"
+          className="w-[40%] opacity-90 absolute bottom-1 right-2 mb-16 h-auto z-50"
+        />
+      </a>
     </section>
   );
 };

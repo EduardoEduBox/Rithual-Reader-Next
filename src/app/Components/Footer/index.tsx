@@ -7,7 +7,7 @@ const Footer = ({ id }: { id: number }) => {
   return (
     <footer className="MyFooter fixed bottom-0 z-50 flex items-center w-full gap-6 px-5 shadow-2xl h-14 bg-neutral-950">
       <LikeButton id={id}></LikeButton>
-      <CommentButton></CommentButton>
+      <CommentButton id={id}></CommentButton>
       <ShareButton></ShareButton>
       <Dots id={id}></Dots>
     </footer>

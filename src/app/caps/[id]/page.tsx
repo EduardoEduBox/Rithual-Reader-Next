@@ -102,7 +102,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
                 placeholder="blur"
                 blurDataURL={currentChapter.prePage}
               />
-              {currentChapter.pages.map((pageUrl, index) => (
+              {/* {currentChapter.pages.map((pageUrl, index) => (
                 <Image
                   className="shadow-2xl min-w-[95%] lg:max-h-[1315px] lg:min-w-0"
                   key={index}
@@ -112,7 +112,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
                   quality={100}
                   height={1315}
                 />
-              ))}
+              ))} */}
             </div>
           </div>
           <div className="hidden lg:flex h-screen fixed w-[25%] bottom-0 right-0">

@@ -53,8 +53,8 @@ const Comments: React.FC<idProp> = async ({ id }) => {
   ) => {
     const commentToUpdate = comments[commentIndex];
 
-    // // Make sure to handle the scenario where likes might be undefined
-    // // const updatedLikes = (commentToUpdate.likes || 0) + 1;
+    // Make sure to handle the scenario where likes might be undefined
+    // const updatedLikes = (commentToUpdate.likes || 0) + 1;
 
     // Se verdadeiro, incrementar número de likes a partir do valor booleano
     // recebido a partir do state do componente Comment
@@ -95,10 +95,17 @@ const Comments: React.FC<idProp> = async ({ id }) => {
           const likeSnap = await getDoc(likeRef);
           const like = likeSnap.data();
 
-          if (
-            like!.commentId === comment.id &&
-            like!.userEmail === user!.email
-          ) {
+          // if (
+          //   like!.commentId === comment.id &&
+          //   like!.userEmail === user!.email
+          // ) {
+          //   // Update the document
+          //   await updateDoc(chapterRef, {
+          //     comments: updatedComments,
+          //   });
+          // }
+
+          if (like!.commentId === comment.id) {
             // Update the document
             await updateDoc(chapterRef, {
               comments: updatedComments,
@@ -144,7 +151,7 @@ const Comments: React.FC<idProp> = async ({ id }) => {
 
     const { user } = UseAuth();
 
-    // Não estou usando a função FireBaseDocumentId por esta ser singular,
+    // Não estou usando a função FireBaseDocumentId por esta função ser singular,
     // Aqui estou obtendo todos os likes
     useEffect(() => {
       const fetchLikeStatus = async () => {
@@ -158,11 +165,7 @@ const Comments: React.FC<idProp> = async ({ id }) => {
           if (likeDoc !== null) {
             const like = likeDoc.data();
 
-            if (
-              like &&
-              like.commentId === props.comment.id &&
-              like.userEmail === user!.email
-            ) {
+            if (like && like.commentId === props.comment.id) {
               setLike(true);
             }
           }
@@ -175,12 +178,14 @@ const Comments: React.FC<idProp> = async ({ id }) => {
     const handleLikeClick = async () => {
       setLikeQt((prevLike: number) => (like ? prevLike - 1 : prevLike + 1));
 
-      setLike((prevLike) => {
-        const newLike = !prevLike;
-        return newLike;
-      });
+      // setLike((prevLike) => {
+      //   const newLike = !prevLike;
+      //   return newLike;
+      // });
 
-      // Passando o valor atualizado para a função updateLikes
+      setLike(!like);
+
+      // // Passando o valor atualizado para a função updateLikes
       await updateLikes(props.index, props.comment, !like);
     };
 
@@ -374,7 +379,11 @@ const Comments: React.FC<idProp> = async ({ id }) => {
   return (
     <>
       {comments.map((comment: CommentType, index: number) => (
-        <Comment index={index} comment={comment} />
+        <Comment
+          index={index}
+          comment={comment}
+          key={comment.username + index}
+        />
       ))}
       <hr className="w-11/12 opacity-25 my-2" />
     </>
