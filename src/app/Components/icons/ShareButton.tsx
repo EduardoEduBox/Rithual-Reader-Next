@@ -32,11 +32,11 @@ const ShareButton: React.FC<ShareButtonProps> = ({ id }) => {
     <div className="flex flex-col items-center justify-center">
       <button
         onClick={handleShare}
-        className="flex flex-col items-center justify-center"
+        className="h-full items-center justify-center"
       >
-        <PiShareFat size={24} />
-        <p>-</p>
+        <PiShareFat className="cursor-pointer h-full" />
       </button>
+      <p>-</p>
     </div>
   );
 };

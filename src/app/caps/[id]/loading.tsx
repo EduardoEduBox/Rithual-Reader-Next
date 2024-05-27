@@ -17,7 +17,7 @@ const Loading = () => {
   }
 
   return (
-    <main className="z-10 flex flex-col items-center w-full py-28">
+    <main className="z-10 flex flex-col w-screen items-center py-28">
       <div className="w-[90%]">
         <h1 className="MainBehindText absolute text-6xl top-24 -z-40 text-[#121212] opacity-[15%]">
           Carregando...

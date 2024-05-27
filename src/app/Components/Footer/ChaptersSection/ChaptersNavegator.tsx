@@ -71,8 +71,6 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
     [filterQuery, sortedChapters]
   );
 
-  console.log(filteredChapters[1].prePage);
-
   return (
     <section className="w-full h-[70%] px-1 pt-4 z-30">
       <div className="flex items-center justify-center w-full mb-4">
@@ -129,13 +127,11 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
                       </Link>
                     )}
                     <div
-                      className="flex h-9 absolute -bottom-2 right-0 text-3xl gap-1"
+                      className="flex h-5 absolute -bottom-1 right-0 text-3xl gap-1"
                       style={{ width: "calc(100% - 70px)" }}
                     >
                       <LikeButton id={Number(el.id)}></LikeButton>
                       <ShareButton id={Number(el.id)}></ShareButton>
-
-                      {/* later on we'll put the views count here! */}
                     </div>
                   </div>
                 </div>

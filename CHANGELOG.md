@@ -99,3 +99,23 @@ Refactored Comments component, cleaned unused code.
 ### Modified
 
 - Refactores and cleaned Comment.tsx code, separating each main functionality into separated components, such as the Modal component and the Dropwdown.
+
+## 2024-5-27 [Eduardo Barbosa]
+
+Optimized code from important components for faster performance, loading when navigating for responsiveness, chapter likes, Modal warning for like button when not logged
+
+### Added
+
+- Likes for chapters almost 100% working by using the user's email for registring the like.
+
+- Warning modal for when the user tries to like the chapter without being logged.
+
+- Loading screen when the user is in Home Page and then tries to navigate to the chapters in ChapterNavigator.tsx
+
+### Fixed
+
+- Some code inconsistencies that were making the aplication slower.
+
+- Now when the three dots in the footer are clicked, the representative image of the selected chapter will not load, it will be loaded previously.
+
+- Pre pages of chapters in HiddenDiv are now pre-loaded
