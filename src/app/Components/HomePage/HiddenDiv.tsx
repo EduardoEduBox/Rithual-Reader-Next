@@ -52,7 +52,7 @@ const HiddenDiv: React.FC<HiddenDivProps> = ({ animateHiddenDiv }) => {
   return (
     <>
       {loading && (
-        <div className="z-50 h-fit bg-[#121212]">
+        <div className="z-[50] h-fit bg-custom-dark">
           <Loading />
         </div>
       )}

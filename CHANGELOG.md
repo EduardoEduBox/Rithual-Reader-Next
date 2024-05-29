@@ -119,3 +119,17 @@ Optimized code from important components for faster performance, loading when na
 - Now when the three dots in the footer are clicked, the representative image of the selected chapter will not load, it will be loaded previously.
 
 - Pre pages of chapters in HiddenDiv are now pre-loaded
+
+## 2024-5-28 [Eduardo Barbosa]
+
+Likes working completely, loading page for profile component, loading animation for home page
+
+### Added
+
+- Loading screen with animations in GSAP and TYPEWRITER on Home page component
+
+- Simple skeleton loading page for profile component
+
+### Fixed
+
+- Likes of chapters moved to context file so now each chapter's like is completely responsive and there is a loading state to the likes to enhance user experience

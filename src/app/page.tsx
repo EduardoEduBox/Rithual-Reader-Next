@@ -3,23 +3,28 @@
 import BottomInformation from "./Components/HomePage/BottomInformation";
 import Language from "./Components/HomePage/Language";
 import UserInfo from "./Components/HomePage/UserInfo";
+import HomeLoading from "./HomeLoading";
 
 export default function Home() {
   return (
-    <section className="w-full h-[100svh] flex flex-col justify-between text-shadow">
-      <div
-        className="absolute w-full h-full -z-10 bg-cover bg-right"
-        style={{
-          backgroundImage: "url('/Singer Background Home Page Reader.png')",
-        }}
-      />
+    <>
+      <HomeLoading />
 
-      <div className="flex">
-        <UserInfo />
-        <Language />
-      </div>
+      <section className="w-full h-[100svh] flex flex-col justify-between text-shadow">
+        <div
+          className="absolute w-full h-full -z-10 bg-cover bg-right"
+          style={{
+            backgroundImage: "url('/Singer Background Home Page Reader.png')",
+          }}
+        />
 
-      <BottomInformation />
-    </section>
+        <div className="flex">
+          <UserInfo />
+          <Language />
+        </div>
+
+        <BottomInformation />
+      </section>
+    </>
   );
 }

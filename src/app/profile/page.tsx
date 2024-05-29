@@ -49,7 +49,9 @@ const Profile = () => {
 
       {/* Action buttons */}
       <button
-        onClick={handleSignOut}
+        onClick={() => {
+          handleSignOut(), window.history.back();
+        }}
         className="py-1 !mt-auto w-1/3 bg-red-500 text-white text-lg rounded-md"
       >
         Sair

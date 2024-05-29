@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { AuthContextProvider } from "./Context/AuthContext";
 import { FirestoreContextProvider } from "./Context/FirestoreContext";
+import { LikesContextProvider } from "./Context/LikesContext";
+import { FirstTimeContextProvider } from "./Context/FirstTimeContent";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -23,7 +25,11 @@ export default function RootLayout({
     <html lang="pt">
       <FirestoreContextProvider>
         <AuthContextProvider>
-          <body className={inter.className}>{children}</body>
+          <LikesContextProvider>
+            <FirstTimeContextProvider>
+              <body className={inter.className}>{children}</body>
+            </FirstTimeContextProvider>
+          </LikesContextProvider>
         </AuthContextProvider>
       </FirestoreContextProvider>
     </html>

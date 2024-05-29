@@ -16,6 +16,9 @@ const config: Config = {
       textShadow: {
         DEFAULT: "2px 2px 4px rgba(0, 0, 0, 0.25)", // Adjust as needed
       },
+      backgroundColor: {
+        "custom-dark": "#121212",
+      },
     },
   },
   plugins: [
