@@ -13,7 +13,7 @@ import Loading from "@/app/Components/Loading";
 import ChaptersSection from "@/app/Components/Footer/ChaptersSection";
 
 const Page = ({ params }: { params: { id: number } }) => {
-  const { chapters } = UseFirestore();
+  const { chapters, updateViews } = UseFirestore();
   const [loading, setLoading] = useState(true);
 
   const maxChapterId = chapters.length - 1;
@@ -37,6 +37,20 @@ const Page = ({ params }: { params: { id: number } }) => {
       setLoading(false);
     }
   }, [chapters]);
+
+  useEffect(() => {
+    if (idConverted !== undefined) {
+      updateViews(idConverted);
+    }
+  }, [idConverted, updateViews]);
+
+  useEffect(() => {
+    const localStorageKey = `chapter_${idConverted}_last_viewed`;
+    const lastViewed = localStorage.getItem(localStorageKey);
+    console.log(
+      `Last viewed timestamp for chapter ${idConverted}: ${lastViewed}`
+    );
+  }, [idConverted]);
 
   if (loading) {
     return (

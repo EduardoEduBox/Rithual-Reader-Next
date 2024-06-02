@@ -1,7 +1,11 @@
 import { UseFirestore } from "@/app/Context/FirestoreContext";
 import { GoComment } from "react-icons/go";
 
-const CommentButton = ({ id }: { id: number }) => {
+type ShareButtonProps = {
+  id: number;
+};
+
+const CommentButton: React.FC<ShareButtonProps> = ({ id }) => {
   const { chapters } = UseFirestore();
   const currentChapter = chapters.find((chapter) => Number(chapter.id) === id);
 

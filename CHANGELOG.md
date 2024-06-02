@@ -133,3 +133,11 @@ Likes working completely, loading page for profile component, loading animation 
 ### Fixed
 
 - Likes of chapters moved to context file so now each chapter's like is completely responsive and there is a loading state to the likes to enhance user experience
+
+## 2024-6-02 [Eduardo Barbosa]
+
+Views system added
+
+### Added
+
+- View system for each chapter, now, when the user first sees a chapter, we register the time he entered in the localStorage, then we increase the number of views by one, if the person already saw the chapter within 30 minutes but still reloaded the page and triggered the function to increase views, we do not let it to, since it would mean that the person could bug the view system by reloading the page several times.

@@ -6,6 +6,7 @@ import { ChaptersSectionProps } from ".";
 import Image from "next/image";
 
 import { UseFirestore } from "@/app/Context/FirestoreContext";
+import ViewsButton from "../../icons/ViewsButton";
 
 const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
   toggleBodyState,
@@ -132,6 +133,7 @@ const ChaptersNavegator: React.FC<ChaptersSectionProps> = ({
                     >
                       <LikeButton id={Number(el.id)}></LikeButton>
                       <ShareButton id={Number(el.id)}></ShareButton>
+                      <ViewsButton id={Number(el.id)}></ViewsButton>
                     </div>
                   </div>
                 </div>
